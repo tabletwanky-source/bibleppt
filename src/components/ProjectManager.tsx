@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { presentationService, Presentation } from '../services/presentationService';
-import { Folder, Plus, Copy, Trash2, Edit, Play } from 'lucide-react';
+import { Folder, Plus, Copy, Trash2, CreditCard as Edit, Play } from 'lucide-react';
 
 interface ProjectManagerProps {
   onOpenPresentation: (presentation: Presentation) => void;
