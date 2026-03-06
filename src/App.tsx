@@ -23,6 +23,8 @@ import LivePresentation from './components/LivePresentation';
 import RemoteControl from './components/RemoteController';
 import RemoteViewer from './components/RemoteViewer';
 import { RemoteControlPage } from './components/RemoteControlPage';
+import PresentationController from './components/PresentationController';
+import ViewerMode from './components/ViewerMode';
 import bibleFallback from './bible_fallback.json';
 import { useLanguage } from './i18n/LanguageContext';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
@@ -80,7 +82,7 @@ import { logUserActivity } from "./services/activityService";
 
 export default function App() {
   const { lang, t } = useLanguage();
-  const [view, setView] = useState<'landing' | 'generator' | 'auth' | 'dashboard' | 'live-presentation' | 'remote' | 'viewer'>('landing');
+  const [view, setView] = useState<'landing' | 'generator' | 'auth' | 'dashboard' | 'live-presentation' | 'remote' | 'viewer' | 'presentations'>('landing');
   const [user, setUser] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -142,6 +144,9 @@ export default function App() {
     }
     if ((viewParam === 'viewer' || path === '/viewer') && sessionParam) {
       setView('viewer');
+    }
+    if (viewParam === 'presentations' || path === '/presentations') {
+      setView('presentations');
     }
   }, []);
 
@@ -895,12 +900,16 @@ export default function App() {
   }
 
   if (view === 'viewer') {
-    return <RemoteViewer />;
+    return <ViewerMode />;
+  }
+
+  if (view === 'presentations') {
+    return <PresentationController />;
   }
 
   if (view === 'live-presentation') {
     return (
-      <LivePresentation 
+      <LivePresentation
         slides={previewSlides}
         userId={user?.id || 'anonymous'}
         onClose={() => setView('generator')}
@@ -912,9 +921,9 @@ export default function App() {
 
   if (view === 'dashboard' && user) {
     return (
-      <Dashboard 
-        user={user} 
-        darkMode={darkMode} 
+      <Dashboard
+        user={user}
+        darkMode={darkMode}
         onLogout={handleLogout}
         onCreateNew={() => setView('generator')}
       />
@@ -983,14 +992,22 @@ export default function App() {
                 {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               {user && (
-                <button 
-                  onClick={() => setView('dashboard')}
-                  className="hidden sm:flex items-center gap-2 text-sm font-bold text-indigo-600 hover:underline"
-                >
-                  <Layout className="w-4 h-4" /> {t('nav.dashboard')}
-                </button>
+                <>
+                  <button
+                    onClick={() => setView('presentations')}
+                    className="hidden sm:flex items-center gap-2 text-sm font-bold text-emerald-600 hover:underline"
+                  >
+                    <Play className="w-4 h-4" /> {t('nav.presentations')}
+                  </button>
+                  <button
+                    onClick={() => setView('dashboard')}
+                    className="hidden sm:flex items-center gap-2 text-sm font-bold text-indigo-600 hover:underline"
+                  >
+                    <Layout className="w-4 h-4" /> {t('nav.dashboard')}
+                  </button>
+                </>
               )}
-              <button 
+              <button
                 onClick={() => setView('landing')}
                 className="flex items-center gap-2 text-sm font-bold text-indigo-600 hover:underline"
               >

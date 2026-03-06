@@ -2,22 +2,43 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# BibleSlide - Professional Presentation Tool for Churches
+# BibleSlide - Complete Church Presentation Platform
 
-A powerful presentation tool for creating, editing, and presenting Bible verses and worship content with real-time remote control capabilities.
+A comprehensive presentation system designed specifically for churches, featuring Bible verse slides, song lyrics, real-time remote control, and professional presentation tools.
 
 View your app in AI Studio: https://ai.studio/apps/10064279-9091-4f83-a76c-29b37eb09536
 
-## Features
+## ✨ Core Features
 
+### 📖 Bible & Content Management
 - **Bible Search & Display**: Search and display Bible verses in multiple translations
-- **Slide Generation**: Automatically generate professional presentation slides
-- **Export Options**: Export to PPTX, PDF, PNG, and HTML formats
-- **Live Presentation Mode**: Full-screen presentation with presenter notes
-- **Real-time Remote Control**: Control presentations from any device
-- **Multi-language Support**: English, French, Spanish, and Haitian Creole
-- **Customizable Themes**: Multiple pre-built themes and custom styling options
-- **Cloud Sync**: Save and sync presentations across devices with Supabase
+- **Auto Bible Slides**: Automatically split verses into individual slides (1 verse = 1 slide)
+- **Song Lyrics Generator**: Paste lyrics and auto-split into slides based on paragraph breaks
+- **Manual Content**: Paste any custom text for quick slide creation
+- **Multi-language Support**: English, French, Spanish, and Haitian Creole interfaces
+
+### 🎨 Professional Presentation Tools
+- **Cloud Projects**: Save, edit, duplicate, and delete presentations in the cloud
+- **Slide Editor**: Full-featured editor with drag-and-drop slide reordering
+- **Live Preview**: See changes in real-time before presenting
+- **Customizable Themes**: Classic, Modern, Minimal, and Church Dark themes
+- **Background Media**: Images, videos, gradients, and solid colors
+- **Export Options**: PPTX, PDF, and PNG image exports
+
+### 🖥️ Advanced Presentation Modes
+- **Full-Screen Mode**: Optimized for church projection screens
+- **Stage View**: Presenter mode with current slide, next slide preview, timer, and slide list
+- **Audience View**: Clean, distraction-free view for the congregation
+- **Viewer Mode**: Real-time slide viewing for musicians, pastors, or online audience
+- **Keyboard Shortcuts**: Arrow keys, F (fullscreen), S (stage view), ESC (exit)
+
+### 📱 Real-time Remote Control System
+- **Multi-device Control**: Control slides from phones, tablets, or laptops
+- **QR Code Access**: Scan to instantly connect without typing
+- **Session Management**: 6-character session codes for easy access
+- **Local Network Mode**: Works offline on same WiFi network
+- **Instant Sync**: Supabase Realtime for zero-latency updates
+- **Multiple Controllers**: Support for hundreds of simultaneous controllers
 
 ## Remote Control System
 
