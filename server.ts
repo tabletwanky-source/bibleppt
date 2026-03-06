@@ -12,10 +12,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const PORT = 3000;
-const bonjour = new Bonjour();
 
-// Broadcast mDNS service for local discovery
+// Broadcast mDNS service for local discovery (optional)
 try {
+  const bonjour = new Bonjour();
   bonjour.publish({
     name: 'BibleSlide Remote',
     type: 'http',
