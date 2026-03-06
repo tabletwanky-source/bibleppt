@@ -11,6 +11,7 @@ export default function PresentationController() {
   const [currentView, setCurrentView] = useState<'manager' | 'editor' | 'present'>('manager');
   const [currentPresentation, setCurrentPresentation] = useState<Presentation | null>(null);
   const [presentationSession, setPresentationSession] = useState<any>(null);
+  const [sessionCode, setSessionCode] = useState<string>('');
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -87,8 +88,11 @@ export default function PresentationController() {
     if (!currentPresentation || !currentPresentation.slides.length) return;
 
     if (currentPresentation.id) {
-      const session = await sessionService.createSession(currentPresentation.id);
-      setPresentationSession(session);
+      const result = await sessionService.createSession(currentPresentation.id);
+      if (result) {
+        setPresentationSession(result.session);
+        setSessionCode(result.code);
+      }
     }
 
     setCurrentSlideIndex(0);
@@ -107,6 +111,7 @@ export default function PresentationController() {
     if (presentationSession) {
       await sessionService.endSession(presentationSession.id);
       setPresentationSession(null);
+      setSessionCode('');
     }
     setCurrentView('editor');
   };
@@ -148,6 +153,7 @@ export default function PresentationController() {
         slides={currentPresentation.slides}
         theme={currentPresentation.theme}
         sessionId={presentationSession?.id}
+        sessionCode={sessionCode}
         onClose={handleEndPresentation}
         onSlideChange={handleSlideChange}
       />

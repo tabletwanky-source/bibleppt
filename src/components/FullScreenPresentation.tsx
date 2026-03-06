@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye, Smartphone, QrCode } from 'lucide-react';
 import { Slide } from '../services/presentationService';
 import { getTheme } from '../config/themes';
+import { QRCodeSVG } from 'qrcode.react';
+import { sessionService } from '../services/sessionService';
 
 interface FullScreenPresentationProps {
   slides: Slide[];
   theme: string;
   sessionId?: string;
+  sessionCode?: string;
   onClose: () => void;
   onSlideChange?: (index: number) => void;
 }
@@ -15,6 +18,7 @@ export default function FullScreenPresentation({
   slides,
   theme,
   sessionId,
+  sessionCode,
   onClose,
   onSlideChange
 }: FullScreenPresentationProps) {
@@ -24,9 +28,11 @@ export default function FullScreenPresentation({
   const [startTime] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [showRemoteInfo, setShowRemoteInfo] = useState(false);
 
   const themeConfig = getTheme(theme);
   const currentSlideData = slides[currentSlide];
+  const remoteUrl = sessionCode ? `${window.location.origin}/remote?session=${sessionCode}` : '';
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,6 +41,22 @@ export default function FullScreenPresentation({
 
     return () => clearInterval(timer);
   }, [startTime]);
+
+  useEffect(() => {
+    if (sessionCode) {
+      const unsubscribe = sessionService.subscribeToRemoteCommands(sessionCode, (command) => {
+        if (command === 'next') {
+          nextSlide();
+        } else if (command === 'previous') {
+          previousSlide();
+        }
+      });
+
+      return () => {
+        unsubscribe.then(channel => channel.unsubscribe());
+      };
+    }
+  }, [sessionCode, currentSlide]);
 
   useEffect(() => {
     let timeout: any;
@@ -294,6 +316,16 @@ export default function FullScreenPresentation({
                 <span className="font-mono">{formatTime(elapsed)}</span>
               </div>
 
+              {sessionCode && (
+                <button
+                  onClick={() => setShowRemoteInfo(!showRemoteInfo)}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600/80 hover:bg-green-700 rounded-lg text-white transition-colors"
+                >
+                  <Smartphone className="w-5 h-5" />
+                  Remote: {sessionCode}
+                </button>
+              )}
+
               <button
                 onClick={() => setShowStageView(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-colors"
@@ -323,6 +355,42 @@ export default function FullScreenPresentation({
       <div className="absolute top-6 left-6 text-white/60 text-sm">
         Press F for fullscreen • Arrow keys to navigate • S for stage view • ESC to exit
       </div>
+
+      {showRemoteInfo && sessionCode && (
+        <div className="absolute top-20 right-6 bg-white rounded-lg shadow-2xl p-6 max-w-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-gray-900">Remote Control</h3>
+            <button
+              onClick={() => setShowRemoteInfo(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="text-center mb-4">
+            <div className="bg-gray-100 rounded-lg p-4 mb-3">
+              <p className="text-sm text-gray-600 mb-2">Session Code</p>
+              <p className="text-3xl font-bold text-blue-600 tracking-wider">{sessionCode}</p>
+            </div>
+
+            <div className="flex justify-center mb-3">
+              <QRCodeSVG value={remoteUrl} size={160} level="H" />
+            </div>
+
+            <p className="text-xs text-gray-500 mb-3">
+              Scan with phone or visit:<br />
+              <span className="font-mono text-blue-600">{window.location.origin}/remote</span>
+            </p>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-xs text-blue-800">
+              Open the remote page on any device and enter the code above to control slides remotely.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
