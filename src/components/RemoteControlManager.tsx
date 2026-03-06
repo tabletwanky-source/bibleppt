@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { QRCodeSVG } from 'qrcode.react';
-import {
-  Smartphone,
-  Power,
-  PowerOff,
-  Copy,
-  Check,
-  Users,
-  Lock,
-  Unlock,
-  Wifi,
-  Share2
-} from 'lucide-react';
+import { Smartphone, Power, PowerOff, Copy, Check, Users, Lock, Clock as Unlock, Wifi, Share2 } from 'lucide-react';
 
 interface RemoteControlManagerProps {
   onCommandReceived?: (command: 'next' | 'previous') => void;
