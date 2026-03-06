@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye, Smartphone, QrCode } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye, Smartphone, QrCode, Lock, Unlock } from 'lucide-react';
 import { Slide } from '../services/presentationService';
 import { getTheme } from '../config/themes';
 import { QRCodeSVG } from 'qrcode.react';
 import { sessionService } from '../services/sessionService';
+import { supabase } from '../supabaseClient';
 
 interface FullScreenPresentationProps {
   slides: Slide[];
@@ -29,6 +30,8 @@ export default function FullScreenPresentation({
   const [elapsed, setElapsed] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [showRemoteInfo, setShowRemoteInfo] = useState(false);
+  const [connectedDevices, setConnectedDevices] = useState(0);
+  const [remoteControlAllowed, setRemoteControlAllowed] = useState(true);
 
   const themeConfig = getTheme(theme);
   const currentSlideData = slides[currentSlide];
@@ -57,6 +60,65 @@ export default function FullScreenPresentation({
       };
     }
   }, [sessionCode, currentSlide]);
+
+  useEffect(() => {
+    if (sessionCode) {
+      const fetchSessionData = async () => {
+        const { data } = await supabase
+          .from('sessions')
+          .select('connected_devices_count, allow_remote_control')
+          .eq('session_code', sessionCode)
+          .maybeSingle();
+
+        if (data) {
+          setConnectedDevices(data.connected_devices_count ?? 0);
+          setRemoteControlAllowed(data.allow_remote_control ?? true);
+        }
+      };
+
+      fetchSessionData();
+
+      const channel = supabase
+        .channel(`session-updates:${sessionCode}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'sessions',
+            filter: `session_code=eq.${sessionCode}`
+          },
+          (payload: any) => {
+            setConnectedDevices(payload.new.connected_devices_count ?? 0);
+            setRemoteControlAllowed(payload.new.allow_remote_control ?? true);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [sessionCode]);
+
+  const toggleRemoteControl = async () => {
+    if (!sessionCode) return;
+
+    const newValue = !remoteControlAllowed;
+    setRemoteControlAllowed(newValue);
+
+    try {
+      const { error } = await supabase
+        .from('sessions')
+        .update({ allow_remote_control: newValue })
+        .eq('session_code', sessionCode);
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error toggling remote control:', err);
+      setRemoteControlAllowed(!newValue);
+    }
+  };
 
   useEffect(() => {
     let timeout: any;
@@ -317,13 +379,41 @@ export default function FullScreenPresentation({
               </div>
 
               {sessionCode && (
-                <button
-                  onClick={() => setShowRemoteInfo(!showRemoteInfo)}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600/80 hover:bg-green-700 rounded-lg text-white transition-colors"
-                >
-                  <Smartphone className="w-5 h-5" />
-                  Remote: {sessionCode}
-                </button>
+                <>
+                  <button
+                    onClick={() => setShowRemoteInfo(!showRemoteInfo)}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-600/80 hover:bg-green-700 rounded-lg text-white transition-colors"
+                  >
+                    <Smartphone className="w-5 h-5" />
+                    <span>{sessionCode}</span>
+                    {connectedDevices > 0 && (
+                      <span className="bg-white/30 px-2 py-0.5 rounded-full text-xs font-semibold">
+                        {connectedDevices}
+                      </span>
+                    )}
+                  </button>
+
+                  <button
+                    onClick={toggleRemoteControl}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white transition-colors ${
+                      remoteControlAllowed
+                        ? 'bg-blue-600/80 hover:bg-blue-700'
+                        : 'bg-yellow-600/80 hover:bg-yellow-700'
+                    }`}
+                  >
+                    {remoteControlAllowed ? (
+                      <>
+                        <Unlock className="w-5 h-5" />
+                        <span>Unlocked</span>
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="w-5 h-5" />
+                        <span>Locked</span>
+                      </>
+                    )}
+                  </button>
+                </>
               )}
 
               <button
@@ -374,6 +464,33 @@ export default function FullScreenPresentation({
               <p className="text-3xl font-bold text-blue-600 tracking-wider">{sessionCode}</p>
             </div>
 
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-2">
+                <p className="text-xs text-gray-600">Connected</p>
+                <p className="text-2xl font-bold text-green-600">{connectedDevices}</p>
+              </div>
+              <div className={`border rounded-lg p-2 ${
+                remoteControlAllowed
+                  ? 'bg-blue-50 border-blue-200'
+                  : 'bg-yellow-50 border-yellow-200'
+              }`}>
+                <p className="text-xs text-gray-600">Control</p>
+                <div className="flex items-center justify-center gap-1">
+                  {remoteControlAllowed ? (
+                    <>
+                      <Unlock className="w-5 h-5 text-blue-600" />
+                      <span className="text-sm font-semibold text-blue-600">Open</span>
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-5 h-5 text-yellow-600" />
+                      <span className="text-sm font-semibold text-yellow-600">Locked</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="flex justify-center mb-3">
               <QRCodeSVG value={remoteUrl} size={160} level="H" />
             </div>
@@ -386,7 +503,9 @@ export default function FullScreenPresentation({
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-xs text-blue-800">
-              Open the remote page on any device and enter the code above to control slides remotely.
+              {remoteControlAllowed
+                ? `${connectedDevices} device${connectedDevices !== 1 ? 's' : ''} can control slides. Click the lock button to disable remote control.`
+                : 'Remote control is locked. No devices can control slides until you unlock it.'}
             </p>
           </div>
         </div>

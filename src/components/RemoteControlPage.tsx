@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
-import { ChevronLeft, ChevronRight, Smartphone, Wifi, WifiOff, Loader } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Smartphone, Wifi, WifiOff, Loader, Lock } from 'lucide-react';
+
+const getDeviceId = () => {
+  let deviceId = localStorage.getItem('bibleslide_device_id');
+  if (!deviceId) {
+    deviceId = `device_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('bibleslide_device_id', deviceId);
+  }
+  return deviceId;
+};
 
 export const RemoteControlPage: React.FC = () => {
   const [sessionCode, setSessionCode] = useState('');
@@ -9,6 +18,10 @@ export const RemoteControlPage: React.FC = () => {
   const [sessionValid, setSessionValid] = useState(false);
   const [error, setError] = useState('');
   const [lastCommand, setLastCommand] = useState<'next' | 'previous' | null>(null);
+  const [remoteAllowed, setRemoteAllowed] = useState(true);
+  const [connectedDevices, setConnectedDevices] = useState(0);
+  const heartbeatInterval = useRef<NodeJS.Timeout>();
+  const deviceId = useRef(getDeviceId());
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -17,6 +30,51 @@ export const RemoteControlPage: React.FC = () => {
       setSessionCode(code.toUpperCase());
       connectToSession(code.toUpperCase());
     }
+  }, []);
+
+  const registerDevice = async (code: string) => {
+    try {
+      const { error } = await supabase
+        .from('remote_devices')
+        .upsert({
+          session_code: code,
+          device_id: deviceId.current,
+          device_name: navigator.userAgent.includes('Mobile') ? 'Mobile Device' : 'Desktop',
+          last_seen: new Date().toISOString()
+        }, {
+          onConflict: 'session_code,device_id'
+        });
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error registering device:', err);
+    }
+  };
+
+  const startHeartbeat = (code: string) => {
+    if (heartbeatInterval.current) {
+      clearInterval(heartbeatInterval.current);
+    }
+
+    heartbeatInterval.current = setInterval(async () => {
+      try {
+        await supabase
+          .from('remote_devices')
+          .update({ last_seen: new Date().toISOString() })
+          .eq('session_code', code)
+          .eq('device_id', deviceId.current);
+      } catch (err) {
+        console.error('Heartbeat error:', err);
+      }
+    }, 20000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (heartbeatInterval.current) {
+        clearInterval(heartbeatInterval.current);
+      }
+    };
   }, []);
 
   const connectToSession = async (code: string) => {
@@ -48,9 +106,15 @@ export const RemoteControlPage: React.FC = () => {
       }
 
       setSessionValid(true);
+      setRemoteAllowed(data.allow_remote_control ?? true);
+      setConnectedDevices(data.connected_devices_count ?? 0);
+
+      await registerDevice(code);
+
       setConnectionStatus('connected');
       setIsConnected(true);
 
+      startHeartbeat(code);
       subscribeToSessionStatus(code);
     } catch (err) {
       console.error('Error connecting to session:', err);
@@ -70,12 +134,18 @@ export const RemoteControlPage: React.FC = () => {
           table: 'sessions',
           filter: `session_code=eq.${code}`
         },
-        (payload) => {
+        (payload: any) => {
           if (!payload.new.is_active) {
             setIsConnected(false);
             setConnectionStatus('disconnected');
             setError('Session ended by presenter');
+            if (heartbeatInterval.current) {
+              clearInterval(heartbeatInterval.current);
+            }
           }
+
+          setRemoteAllowed(payload.new.allow_remote_control ?? true);
+          setConnectedDevices(payload.new.connected_devices_count ?? 0);
         }
       )
       .subscribe();
@@ -88,6 +158,12 @@ export const RemoteControlPage: React.FC = () => {
   const sendCommand = async (command: 'next' | 'previous') => {
     if (!isConnected || !sessionCode) return;
 
+    if (!remoteAllowed) {
+      setError('Remote control is locked by presenter');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
     try {
       setLastCommand(command);
 
@@ -98,7 +174,14 @@ export const RemoteControlPage: React.FC = () => {
           command: command
         });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('allow_remote_control')) {
+          setError('Remote control is locked by presenter');
+          setRemoteAllowed(false);
+        } else {
+          throw error;
+        }
+      }
 
       setTimeout(() => setLastCommand(null), 300);
     } catch (err) {
@@ -174,7 +257,7 @@ export const RemoteControlPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col">
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -185,23 +268,30 @@ export const RemoteControlPage: React.FC = () => {
                 <p className="text-sm text-gray-600">Session: {sessionCode}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {connectionStatus === 'connected' ? (
-                <>
-                  <Wifi className="w-5 h-5 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">Connected</span>
-                </>
-              ) : connectionStatus === 'connecting' ? (
-                <>
-                  <Loader className="w-5 h-5 animate-spin text-yellow-600" />
-                  <span className="text-sm font-medium text-yellow-600">Connecting</span>
-                </>
-              ) : (
-                <>
-                  <WifiOff className="w-5 h-5 text-red-600" />
-                  <span className="text-sm font-medium text-red-600">Disconnected</span>
-                </>
+            <div className="flex items-center gap-4">
+              {isConnected && (
+                <div className="text-sm text-gray-600">
+                  <span className="font-semibold">{connectedDevices}</span> devices
+                </div>
               )}
+              <div className="flex items-center gap-2">
+                {connectionStatus === 'connected' ? (
+                  <>
+                    <Wifi className="w-5 h-5 text-green-600" />
+                    <span className="text-sm font-medium text-green-600">Connected</span>
+                  </>
+                ) : connectionStatus === 'connecting' ? (
+                  <>
+                    <Loader className="w-5 h-5 animate-spin text-yellow-600" />
+                    <span className="text-sm font-medium text-yellow-600">Connecting</span>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-5 h-5 text-red-600" />
+                    <span className="text-sm font-medium text-red-600">Disconnected</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -227,9 +317,17 @@ export const RemoteControlPage: React.FC = () => {
         ) : (
           <div className="max-w-md w-full space-y-6">
             <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Slide Controls
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Slide Controls
+                </h2>
+                {!remoteAllowed && (
+                  <div className="flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full">
+                    <Lock className="w-4 h-4 text-yellow-700" />
+                    <span className="text-xs font-semibold text-yellow-700">Locked</span>
+                  </div>
+                )}
+              </div>
 
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
@@ -237,10 +335,23 @@ export const RemoteControlPage: React.FC = () => {
                 </div>
               )}
 
+              {!remoteAllowed && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-yellow-800">
+                    Remote control is currently locked by the presenter.
+                  </p>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => sendCommand('previous')}
-                  className={`flex flex-col items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-2xl p-8 transition-all transform active:scale-95 ${
+                  disabled={!remoteAllowed}
+                  className={`flex flex-col items-center justify-center gap-3 rounded-2xl p-8 transition-all transform active:scale-95 ${
+                    remoteAllowed
+                      ? 'bg-gray-100 hover:bg-gray-200 active:bg-gray-300'
+                      : 'bg-gray-50 opacity-50 cursor-not-allowed'
+                  } ${
                     lastCommand === 'previous' ? 'ring-4 ring-blue-500' : ''
                   }`}
                 >
@@ -250,7 +361,12 @@ export const RemoteControlPage: React.FC = () => {
 
                 <button
                   onClick={() => sendCommand('next')}
-                  className={`flex flex-col items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-2xl p-8 transition-all transform active:scale-95 ${
+                  disabled={!remoteAllowed}
+                  className={`flex flex-col items-center justify-center gap-3 rounded-2xl p-8 transition-all transform active:scale-95 ${
+                    remoteAllowed
+                      ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+                      : 'bg-blue-300 cursor-not-allowed'
+                  } ${
                     lastCommand === 'next' ? 'ring-4 ring-blue-300' : ''
                   }`}
                 >
@@ -261,9 +377,10 @@ export const RemoteControlPage: React.FC = () => {
             </div>
 
             <div className="bg-white rounded-lg shadow-md p-4">
-              <p className="text-sm text-gray-600 text-center">
-                Tip: Keep this screen active for best performance
-              </p>
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <span>Connected devices: {connectedDevices}</span>
+                <span className="text-xs">Keep screen active for best performance</span>
+              </div>
             </div>
           </div>
         )}
