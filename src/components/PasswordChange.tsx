@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-import {
-  Lock,
-  Eye,
-  EyeOff,
-  Loader2,
-  Check,
-  AlertCircle,
-  ShieldCheck
-} from 'lucide-react';
+import { Lock, Eye, EyeOff, Loader as Loader2, Check, CircleAlert as AlertCircle, ShieldCheck } from 'lucide-react';
 
 interface PasswordRule {
   label: string;

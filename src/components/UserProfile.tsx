@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
-import {
-  Camera,
-  Save,
-  Loader2,
-  User,
-  Globe,
-  Church,
-  BookOpen,
-  Check,
-  AlertCircle
-} from 'lucide-react';
+import { Camera, Save, Loader as Loader2, User, Globe, Church, BookOpen, Check, CircleAlert as AlertCircle } from 'lucide-react';
 
 interface UserProfileProps {
   user: any;

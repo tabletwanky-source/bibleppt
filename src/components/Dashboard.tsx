@@ -1,35 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useLanguage } from "../i18n/LanguageContext";
-import {
-  User,
-  FileText,
-  Settings,
-  LogOut,
-  PlusCircle,
-  Paintbrush,
-  HeartHandshake,
-  ChevronRight,
-  Layout,
-  Clock,
-  Mail,
-  Shield,
-  Bell,
-  Filter,
-  ArrowUpDown,
-  BookOpen,
-  Search,
-  Sparkles,
-  Presentation,
-  FileUp,
-  Download,
-  Trash2,
-  Star,
-  Loader2,
-  Play,
-  TrendingUp,
-  BarChart3
-} from "lucide-react";
+import { User, FileText, Settings, LogOut, CirclePlus as PlusCircle, Paintbrush, HeartHandshake, ChevronRight, LayoutGrid as Layout, Clock, Mail, Shield, Bell, ListFilter as Filter, ArrowUpDown, BookOpen, Search, Sparkles, Presentation, FileUp, Download, Trash2, Star, Loader as Loader2, Play, TrendingUp, ChartBar as BarChart3 } from "lucide-react";
 import { 
   BarChart, 
   Bar, 

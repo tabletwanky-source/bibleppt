@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import {
-  Users,
-  Shield,
-  Trash2,
-  UserCheck,
-  UserX,
-  Search,
-  ChevronDown,
-  Loader2,
-  AlertTriangle,
-  Check,
-  Radio,
-  RefreshCw
-} from 'lucide-react';
+import { Users, Shield, Trash2, UserCheck, UserX, Search, ChevronDown, Loader as Loader2, TriangleAlert as AlertTriangle, Check, Radio, RefreshCw } from 'lucide-react';
 
 interface UserProfile {
   id: string;
