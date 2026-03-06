@@ -139,7 +139,7 @@ export default function App() {
     const userParam = params.get('user');
     const path = window.location.pathname;
 
-    if ((viewParam === 'remote' || path === '/remote') && sessionParam) {
+    if (viewParam === 'remote' || path === '/remote') {
       setView('remote');
     }
     if ((viewParam === 'viewer' || path === '/viewer') && sessionParam) {

@@ -56,6 +56,7 @@ export default function LivePresentation({
   const [sessionId] = useState(() => Math.random().toString(36).substring(2, 10).toUpperCase());
   const [networkInfo, setNetworkInfo] = useState<{ localIp: string; port: number } | null>(null);
   const [connectedClients, setConnectedClients] = useState(0);
+  const [activeRemoteSession, setActiveRemoteSession] = useState<{ code: string | null; devices: number; allowed: boolean } | null>(null);
   const ws = useRef<WebSocket | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -245,9 +246,14 @@ export default function LivePresentation({
             title={t('presentation.remote')}
           >
             <Smartphone size={20} />
-            {connectedClients > 0 && (
-              <span className="bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                {connectedClients}
+            {activeRemoteSession?.code && (
+              <span className="bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">
+                {activeRemoteSession.code}
+              </span>
+            )}
+            {(activeRemoteSession?.devices ?? connectedClients) > 0 && (
+              <span className="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                {activeRemoteSession?.devices ?? connectedClients}
               </span>
             )}
           </button>
@@ -450,7 +456,10 @@ export default function LivePresentation({
                 <X size={20} />
               </button>
 
-              <RemoteControlManager onCommandReceived={handleRemoteCommand} />
+              <RemoteControlManager
+                onCommandReceived={handleRemoteCommand}
+                onSessionChange={(info) => setActiveRemoteSession(info)}
+              />
             </motion.div>
           </div>
         )}
