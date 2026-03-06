@@ -1,0 +1,402 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "create": "Créer une diapositive",
+    "contact": "Contact",
+    "donation": "Don",
+    "about": "À propos de BibSlide",
+    "terms": "Conditions",
+    "privacy": "Confidentialité",
+    "overview": "Aperçu",
+    "presentations": "Présentations",
+    "templates": "Modèles",
+    "settings": "Paramètres"
+  },
+  "buttons": {
+    "search": "Rechercher",
+    "addToSlide": "Ajouter à la diapositive",
+    "next": "Suivant",
+    "prev": "Précédent",
+    "download": "Télécharger",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "startNow": "Commencer maintenant",
+    "learnMore": "En savoir plus",
+    "generate": "Générer des diapositives",
+    "analyze": "Analyser",
+    "clear": "Effacer",
+    "copy": "Copier",
+    "exportPPTX": "Exporter PPTX",
+    "exportPDF": "Exporter PDF",
+    "viewAll": "Voir tout",
+    "manageTemplates": "Gérer les modèles",
+    "open": "Ouvrir",
+    "delete": "Supprimer",
+    "use": "Utiliser",
+    "saveChanges": "Enregistrer les modifications",
+    "changePassword": "Changer le mot de passe",
+    "logoutNow": "Se déconnecter maintenant",
+    "donate": "Faire un don",
+    "edit": "Modifier le texte",
+    "done": "Terminé",
+    "generateSlides": "Générer les diapositives"
+  },
+  "labels": {
+    "enterVerse": "Rechercher un verset (ex: Jean 3:16 ou Psaume 23:1)",
+    "loading": "Chargement...",
+    "noResults": "Aucun résultat trouvé",
+    "verseOfDay": "Verset du jour",
+    "savedTemplate": "Modèle enregistré",
+    "searchBible": "Chercher dans la Bible...",
+    "searchSong": "Chercher un chant...",
+    "source": "Source",
+    "allTypes": "Tous les types",
+    "mostRecent": "Plus récents",
+    "oldest": "Plus anciens",
+    "profile": "Profil",
+    "security": "Sécurité",
+    "username": "Nom d'utilisateur",
+    "bibleVersion": "Version de la Bible",
+    "songLanguage": "Langue du chant",
+    "versesPerSlide": "Versets par slide",
+    "linesPerSlide": "Lignes par slide",
+    "presentationTheme": "Thème de présentation",
+    "churchName": "Nom de l'église (Optionnel)",
+    "churchNamePlaceholder": "ex: Église Baptiste",
+    "referenceBible": "Référence (ex: 1 Rois 21:1-7)",
+    "referenceSong": "Titre ou Numéro (ex: 17 Chant d'Espérance)",
+    "placeholderBible": "Matthieu 5:1-12",
+    "placeholderSong": "Je suis si heureux...",
+    "aboutTitle": "À propos de BibSlide",
+    "aboutSubtitle": "BibSlide est un outil créé pour aider les églises à servir Dieu avec la technologie. Chaque don que vous faites nous aide à continuer d'améliorer la plateforme, à la garder gratuite pour toutes les églises, et à ajouter de nouvelles fonctionnalités comme la musique et les présentations bibliques.",
+    "electronicDonation": "Don électronique",
+    "bankTransfer": "Virement bancaire",
+    "bibleQuote": "« Dieu aime celui qui donne avec joie. » — 2 Corinthiens 9:7",
+    "poweredBy": "Propulsé par",
+    "copyright": "© 2026 BibSlide — Outil pour les Églises.",
+    "bible": "Bible",
+    "paste": "Coller",
+    "manual": "Manuel",
+    "churchName": "Nom de l'église (optionnel)",
+    "versesPerSlide": "Versets par diapositive",
+    "selectTheme": "Sélectionner le thème",
+    "oneVersePerSlide": "Verset par Slide",
+    "twoVersesPerSlide": "Versets par Slide",
+    "threeVersesPerSlide": "Versets par Slide",
+    "fourVersesPerSlide": "Versets par Slide",
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
+    "themeWorship": "Culte",
+    "themeNature": "Nature",
+    "recentSearches": "Recherches récentes",
+    "pastedText": "Collez votre texte ici...",
+    "slideStyle": "Style de diapositive",
+    "bgColor": "Couleur de fond",
+    "textColor": "Couleur du texte",
+    "brightness": "Luminosité",
+    "bgImage": "Image de fond",
+    "uploadImage": "Télécharger une image",
+    "removeImage": "Supprimer l'image",
+    "readVerse": "Lire le verset",
+    "copyright": "© 2026 BibSlide — Outil pour les Églises.",
+    "poweredBy": "Propulsé par",
+    "editPassage": "Modifier le passage"
+  },
+  "auth": {
+    "back": "Retour",
+    "welcomeBack": "Bon retour !",
+    "createAccount": "Créer un compte",
+    "loginSubtitle": "Connectez-vous pour gérer vos présentations.",
+    "signupSubtitle": "Commencez à utiliser BibSlide dès aujourd'hui.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Mot de passe",
+    "loginButton": "Se connecter",
+    "signupButton": "S'inscrire",
+    "googleLogin": "Se connecter avec Google",
+    "googleSignup": "S'inscrire avec Google",
+    "noAccount": "Vous n'avez pas de compte ? S'inscrire",
+    "haveAccount": "Vous avez déjà un compte ? Se connecter",
+    "checkEmail": "Vérifiez votre e-mail pour confirmer l'inscription !",
+    "searchPassage": "Rechercher un passage",
+    "searchSong": "Rechercher un chant",
+    "pasteText": "Coller du texte",
+    "pastePlaceholder": "Collez votre chant ou passage biblique ici...",
+    "searchError": "Erreur de recherche",
+    "textPreview": "Aperçu du texte",
+    "pasteConvert": "Coller & Convertir",
+    "nothingHere": "Rien ici pour le moment",
+    "nothingHereSubtitle": "Entrez un passage biblique dans la boîte de recherche pour commencer à créer vos diapositives.",
+    "searchingBible": "Biblia recherche les versets...",
+    "searchingSong": "Recherche du chant..."
+  },
+  "contact": {
+    "title": "📨 Contact & Suggestions",
+    "subtitle": "Vous avez une question ou une suggestion ? Envoyez-nous un message et nous vous répondrons dès que possible.",
+    "name": "Nom complet",
+    "email": "Adresse e-mail",
+    "type": "Type de message",
+    "types": {
+      "suggestion": "Suggestion",
+      "question": "Question",
+      "bug": "Rapport de bug",
+      "partnership": "Partenariat",
+      "other": "Autre"
+    },
+    "q1": "Qu’aimez-vous le plus dans BibSlide ?",
+    "q1_sug": "Ex: simplicité, design, rapidité, fonctions bibliques...",
+    "q2": "Comment pouvons-nous améliorer BibSlide pour votre église ?",
+    "q2_sug": "Ex: plus de traductions, plus de modèles PowerPoint...",
+    "q3": "Recommanderiez-vous BibSlide à d’autres ?",
+    "yes": "Oui",
+    "no": "Non",
+    "maybe": "Peut-être",
+    "rating": "Évaluez votre expérience",
+    "upload": "Téléversez votre fichier PowerPoint (.pptx)",
+    "upload_note": "Optionnel — ajoutez votre présentation ou modèle de diapositive",
+    "invalidFile": "Veuillez télécharger un fichier .pptx valide de moins de 20 Mo.",
+    "message": "Votre message",
+    "send": "Envoyer le message",
+    "thanks": "🙏 Nous apprécions vos retours"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "subtitle": "Gérez vos présentations et modèles depuis votre espace personnel.",
+    "createNew": "Créer un nouveau slide",
+    "overview": "Aperçu",
+    "presentations": "Mes Présentations",
+    "templates": "Mes Modèles",
+    "settings": "Paramètres",
+    "recentPresentations": "Présentations Récentes",
+    "savedTemplates": "Modèles Enregistrés",
+    "externalResources": "Ressources Externes",
+    "externalResourcesSubtitle": "Accédez à d'autres outils bibliques directement depuis votre tableau de bord.",
+    "myPresentations": "Mes Présentations",
+    "newPresentation": "Nouvelle Présentation",
+    "myTemplates": "Mes Modèles",
+    "accountSettings": "Paramètres du Compte",
+    "stats": {
+      "slides": "Slides",
+      "templates": "Modèles",
+      "songs": "Chants",
+      "activeDays": "Jours Actifs"
+    },
+    "analytics": {
+      "title": "Analyses d'Activité",
+      "weekly": "Hebdomadaire",
+      "monthly": "Mensuel",
+      "slidesCreated": "Diapositives Créées",
+      "songsAdded": "Chants Ajoutés",
+      "templatesSaved": "Modèles Enregistrés"
+    },
+    "myTemplatesSection": {
+      "title": "🎨 Mes Modèles",
+      "uploadBtn": "Téléverser un modèle (.pptx)",
+      "noTemplates": "Aucun modèle téléversé pour le moment.",
+      "uploading": "Téléversement en cours...",
+      "success": "Modèle téléversé avec succès !",
+      "error": "Échec du téléversement du modèle.",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce modèle ?",
+      "size": "Taille",
+      "date": "Date",
+      "default": "Par défaut",
+      "setDefault": "Définir par défaut"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 BibSlide — Zouti pou Legliz | Outil pour l’Église | Herramienta para la Iglesia"
+  },
+  "messages": {
+    "errorSearch": "Ce verset n'a pas été trouvé sur Biblia.com",
+    "errorAPI": "Une erreur s'est produite. Veuillez réessayer.",
+    "errorNoVerse": "Aucun verset trouvé.",
+    "errorOffline": "Aucun verset trouvé (Hors ligne).",
+    "successAdd": "Verset ajouté à la diapositive !",
+    "bibleSearchLoading": "Biblia recherche les versets...",
+    "songSearchNotAvailable": "La recherche de chants n'est pas disponible pour le moment.",
+    "bibleSearchPlaceholder": "Rechercher un verset (ex: Jean 3:16 ou Psaume 23:1)",
+    "pastePlaceholder": "Collez vos versets bibliques ou paroles de chants ici...",
+    "noTemplates": "Aucun modèle enregistré pour le moment.",
+    "logoutSubtitle": "Déconnectez-vous de tous vos appareils.",
+    "noVerses": "Aucun verset trouvé. Veuillez vérifier votre référence.",
+    "noSong": "Aucun chant trouvé. Veuillez vérifier votre titre ou numéro.",
+    "errorFetching": "Erreur lors de la récupération du contenu. Veuillez réessayer."
+  },
+  "hero": {
+    "title": "Affichez la Parole sur l'écran sans effort.",
+    "subtitle": "BibSlide aide les églises à transformer les versets bibliques et les chants en magnifiques présentations PowerPoint en quelques secondes.",
+    "cta": "⭐ Essayez BibSlide maintenant",
+    "watchTutorial": "🎥 Voir le tutoriel",
+    "benefits": [
+      "Convertissez automatiquement les versets bibliques",
+      "Exportez en .pptx ou PDF",
+      "Vue en direct + télécommande mobile",
+      "Modèles professionnels pour les églises"
+    ]
+  },
+  "mission": {
+    "title": "Donner aux églises les moyens de créer sans limites",
+    "text": "Chaque année, les églises dépensent des milliers de dollars pour des logiciels de présentation. BibSlide existe pour offrir une solution gratuite et moderne, afin que les fonds servent la mission, pas les licences."
+  },
+  "features": {
+    "title": "Simple. Puissant. Conçu pour le culte.",
+    "subtitle": "Tout ce dont vous avez besoin pour gérer la projection de la Parole et de la musique en un seul endroit.",
+    "bible": {
+      "title": "Recherche biblique",
+      "desc": "Insérez instantanément des versets bibliques dans plusieurs langues (FR/EN/ES)."
+    },
+    "songs": {
+      "title": "Importation de chants & paroles",
+      "desc": "Ajoutez rapidement des paroles de louange depuis Cesperance ou par saisie manuelle."
+    },
+    "templates": {
+      "title": "Modèles & Styles",
+      "desc": "Choisissez parmi des thèmes PowerPoint propres et élégants prêts à être exportés."
+    },
+    "remote": {
+      "title": "Télécommande",
+      "desc": "Contrôlez vos diapositives directement depuis votre téléphone mobile."
+    },
+    "timer": {
+      "title": "Compte à rebours",
+      "desc": "Affichez des comptes à rebours pour les services et les événements."
+    },
+    "cloud": {
+      "title": "Sauvegarde Cloud",
+      "desc": "Toutes vos diapositives et modèles sont sauvegardés dans le cloud Supabase."
+    }
+  },
+  "tutorial": {
+    "title": "Voir BibSlide en action 🎬",
+    "subtitle": "Apprenez à créer de superbes présentations d'église en quelques minutes seulement."
+  },
+  "comparison": {
+    "title": "Comment BibSlide se compare aux autres outils de présentation d’église",
+    "subtitle": "Découvrez pourquoi BibSlide est la solution gratuite, multilingue et accessible à toutes les églises.",
+    "headers": ["Feature / Fonction", "BibSlide", "FreeShow", "ProPresenter", "EasyWorship"],
+    "rows": [
+      ["💰 Free / Gratuit", "✔️ Yes", "✔️ Yes", "❌ No ($289 / year)", "❌ No ($180 / year)"],
+      ["☁️ Cloud-Based Web App", "✔️ Yes (no install)", "❌ Desktop only", "❌ Desktop only", "❌ Desktop only"],
+      ["🌍 Multilingual (FR/EN/ES)", "✔️ Yes", "✔️ Partial", "❌ No", "❌ No"],
+      ["📖 Bible Verse Integration", "✔️ Auto Bible API", "✔️ Local Bible", "✔️ Included", "✔️ Included"],
+      ["🎵 Song Import (Cesperance)", "✔️ Direct import", "✔️ Manual", "✔️ Manual", "✔️ Manual"],
+      ["🎨 Templates & Themes", "✔️ Cloud templates", "✔️ Local", "✔️ Limited", "✔️ Limited"],
+      ["📱 Mobile Remote Control", "✔️ Cloud sync (Realtime)", "✔️ Local network", "✔️ Local network", "❌ No"],
+      ["⏱️ Countdown / Timer", "✔️ Built-in", "✔️ Built-in", "✔️ Built-in", "✔️ Built-in"],
+      ["🧑‍🤝‍🧑 Collaboration / Cloud Sync", "✔️ Supabase Realtime", "✔️ Limited", "✔️ Pro-Plan", "❌ No"],
+      ["📤 Export PPTX / PDF", "✔️ Yes", "❌ No", "✔️ Yes", "✔️ Yes"]
+    ]
+  },
+  "howItWorks": {
+    "title": "3 étapes pour créer des présentations exceptionnelles",
+    "step1": {
+      "title": "Étape 1",
+      "desc": "🔍 Recherchez un verset biblique — ex: « Jean 3:16 »."
+    },
+    "step2": {
+      "title": "Étape 2",
+      "desc": "🎨 Personnalisez la diapositive — choisissez la police, la couleur, le fond, etc."
+    },
+    "step3": {
+      "title": "Étape 3",
+      "desc": "📥 Exportez en .pptx ou PDF — prêt à l'emploi ou à partager."
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent les autres églises",
+    "items": [
+      {
+        "quote": "BibSlide simplifie notre travail de présentation — la recherche biblique et l'exportation PPTX se font sans effort !",
+        "author": "Pasteur Jean"
+      },
+      {
+        "quote": "Un outil vraiment gratuit et facile à utiliser pour tout le monde.",
+        "author": "Ministère de Louange"
+      }
+    ]
+  },
+  "ctaSection": {
+    "title": "Commencez à créer votre première présentation biblique dès aujourd'hui ✨",
+    "button1": "🔹 Commencer",
+    "button2": "🔹 Soutenir par un don",
+    "subtext": "100% Gratuit • Multilingue • Pour chaque église"
+  },
+  "presentation": {
+    "title": "🎤 Présentation en direct",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "start": "Démarrer la présentation",
+    "remote": "📱 Télécommande",
+    "scan": "Scannez pour vous connecter",
+    "fullscreen": "Plein écran",
+    "exit": "Quitter",
+    "current": "Diapositive actuelle",
+    "nextPreview": "Diapositive suivante",
+    "timer": "Minuteur",
+    "audience": "Vue public",
+    "presenter": "Vue présentateur",
+    "connecting": "Connexion...",
+    "connected": "Connecté",
+    "disconnected": "Déconnecté",
+    "invalidSession": "Session invalide ou expirée",
+    "goToSlide": "Aller à la diapo #",
+    "stop": "Arrêter la présentation"
+  },
+  "donation": {
+    "title": "Soutenez la Mission 💝",
+    "subtitle": "Votre don nous aide à garder BibSlide gratuit pour toutes les églises du monde entier.",
+    "paypal": "Faire un don via PayPal",
+    "stripe": "Faire un don via Stripe",
+    "sidebarSubtitle": "Soutenez BibSlide pour nous aider à grandir."
+  },
+  "about": {
+    "title": "À propos de BibSlide",
+    "tagline": "Outil moderne pour les présentations d'église",
+    "description1": "<strong>BibSlide</strong> est un outil créatif développé par <strong>Wanky Massenat</strong> pour aider les pasteurs, les chantres et les équipes techniques d'église à préparer de magnifiques présentations bibliques avec efficacité et inspiration.",
+    "description2": "Notre objectif est de réunir la <em class='text-indigo-600 font-bold'>Technologie et la Foi</em> pour servir Dieu avec excellence.",
+    "description3": "Avec BibSlide, vous pouvez rechercher des versets, des chants ou des passages bibliques, et les transformer automatiquement en <strong>diapositives PowerPoint (.pptx)</strong> ou <strong>PDF</strong> pour la projection pendant le culte. L'outil est facile à utiliser, rapide et compatible avec les appareils mobiles, les ordinateurs et les projecteurs.",
+    "missionTitle": "Notre Mission",
+    "missionDesc": "La mission de BibSlide est d'aider les églises à utiliser des outils numériques modernes pour rendre leur <strong>communication spirituelle</strong> plus attrayante, simple et accessible à tous — sans frais payants ni complexité technique. Nous croyons que la <strong>parole de Dieu</strong> mérite d'être présentée avec beauté et respect.",
+    "featuresTitle": "Caractéristiques principales",
+    "features": [
+      "🔎 Recherche automatique de versets (Bible API)",
+      "🎵 Chant d’Espérance intégré",
+      "🎨 Intégration Canva",
+      "📤 Exportation PPTX, PDF, Image",
+      "🔊 Text-to-Speech pour lire les versets",
+      "🕊️ Mode présentation plein écran",
+      "💾 Enregistrez vos propres modèles"
+    ],
+    "developerTitle": "À propos du développeur",
+    "developerDesc": "<strong>Wanky Massenat</strong> est un médecin, développeur et créateur passionné qui croit en la puissance de Dieu et de la technologie. Il est le fondateur de <strong>Wanky Academy</strong> et le créateur de <strong>Belmagg Company LLC</strong>. Sa mission est de servir Dieu avec des compétences numériques pour transformer la communauté.",
+    "supportEmail": "📩 support@bibleslide.org",
+    "makeDonation": "💝 Faire un don",
+    "visitOfficial": "🌐 Visitez le site officiel"
+  },
+  "terms": {
+    "title": "Conditions d'utilisation – BibSlide",
+    "section1Title": "1. Objectif de la plateforme",
+    "section1Desc": "BibSlide est un outil créé par <strong>Wanky Massenat</strong> pour aider les églises, les prédicateurs et ceux qui servent Dieu à présenter facilement des versets bibliques lors de services, de conférences ou d'études bibliques. La plateforme est conçue pour servir de support technique et spirituel — pas comme un outil commercial.",
+    "section2Title": "2. Droits d'utilisation",
+    "section2Item1": "Vous avez le droit d'utiliser BibSlide pour créer des présentations personnelles ou d'église.",
+    "section2Item2": "Vous <strong>n'avez pas le droit</strong> de vendre ou de redistribuer l'application ou les fichiers .pptx qui en découlent en tant que service payant sans l'autorisation de l'auteur.",
+    "section2Item3": "Tous les textes bibliques sont dérivés de traductions publiques (Bib Kreyòl 1985, Louis Segond 1910 ou King James Version) et restent la propriété du public.",
+    "section3Title": "3. Responsabilité de l'utilisateur",
+    "section3Item1": "L'utilisateur est responsable de la manière dont il utilise le contenu lors de services ou de publications.",
+    "section3Item2": "BibSlide n'est pas responsable de toute mauvaise utilisation ou erreur dans les versets.",
+    "section3Item3": "L'utilisateur doit respecter la parole de Dieu avec respect et intégrité.",
+    "section4Title": "4. Données et confidentialité",
+    "section4Item1": "BibSlide <strong>ne collecte aucune information personnelle</strong>.",
+    "section4Item2": "Toute la génération de contenu se fait via l'API Biblia.com en utilisant des données bibliques publiques.",
+    "section4Item3": "Aucune donnée utilisateur n'est stockée sur des serveurs externes sans consentement.",
+    "section5Title": "5. Modification des conditions",
+    "section5Desc": "Wanky Massenat se réserve le droit de modifier les conditions d'utilisation à tout moment pour améliorer le service ou ajouter de nouvelles fonctions. Tous les changements seront publiés sur cette page.",
+    "section6Title": "6. Acceptation",
+    "section6Desc": "En utilisant BibSlide, vous acceptez toutes les conditions écrites dans ce document. Si vous n'êtes pas d'accord, veuillez cesser d'utiliser la plateforme."
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "desc1": "BibSlide respecte la vie privée de chaque utilisateur.",
+    "desc2": "Nous ne collectons, ne vendons ni ne partageons aucune donnée personnelle. Toutes les opérations sont effectuées localement ou via le service <strong>API Biblia.com</strong> uniquement pour récupérer des textes bibliques publics."
+  }
+}

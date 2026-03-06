@@ -1,0 +1,365 @@
+{
+  "nav": {
+    "home": "Akèy",
+    "dashboard": "Tablo de bò",
+    "create": "Kreye Slide",
+    "contact": "Kontak",
+    "donation": "Donasyon",
+    "about": "Sou BibSlide",
+    "terms": "Kondisyon",
+    "privacy": "Konfidansyalite",
+    "overview": "Apèsi",
+    "presentations": "Prezantasyon",
+    "templates": "Modèl",
+    "settings": "Paramèt"
+  },
+  "buttons": {
+    "search": "Chèche",
+    "addToSlide": "Ajoute nan Slide",
+    "next": "Next",
+    "prev": "Prev",
+    "download": "Telechaje",
+    "login": "Log-in",
+    "logout": "Log-out",
+    "startNow": "Kòmanse Kounye a",
+    "learnMore": "Aprann Plis",
+    "generate": "Jenerasyon Slide",
+    "analyze": "Analize",
+    "clear": "Efase",
+    "copy": "Kopye",
+    "exportPPTX": "Export PPTX",
+    "exportPDF": "Export PDF",
+    "viewAll": "Wè tout",
+    "manageTemplates": "Jere modèl yo",
+    "open": "Ouvri",
+    "delete": "Efase",
+    "use": "Itilize",
+    "saveChanges": "Sove chanjman yo",
+    "changePassword": "Chanje modpas",
+    "logoutNow": "Dekonekte kounye a",
+    "donate": "Fè yon don",
+    "edit": "Modifye tèks",
+    "done": "Fini",
+    "generateSlides": "Kreye diapozitiv"
+  },
+  "labels": {
+    "enterVerse": "Chèche yon vèsè (eg: Jan 3:16 oswa Sòm 23:1)",
+    "loading": "Chajman...",
+    "noResults": "Pa gen rezilta",
+    "verseOfDay": "Vèsè pou jounen an",
+    "savedTemplate": "Modèl Sove",
+    "searchBible": "Chèche nan Bib la...",
+    "searchSong": "Chèche yon chante...",
+    "source": "Sous",
+    "allTypes": "Tout Tip",
+    "mostRecent": "Plus Récents",
+    "oldest": "Plus Anciens",
+    "profile": "Pwofil",
+    "security": "Sekirite",
+    "username": "Non Itilizatè",
+    "bibleVersion": "Vèsyon Bib la",
+    "songLanguage": "Lang Chante",
+    "versesPerSlide": "Vèsè pa slide",
+    "linesPerSlide": "Liy pa slide",
+    "presentationTheme": "Tèm Prezantasyon",
+    "churchName": "Non Legliz la (Opsyonèl)",
+    "churchNamePlaceholder": "eg: Premye Legliz Batis",
+    "referenceBible": "Referans (eg: 1 Wa 21:1-7)",
+    "referenceSong": "Tit oswa Nimewo (eg: 17 Chant d'Espérance)",
+    "placeholderBible": "Matye 5:1-12",
+    "placeholderSong": "Mwen byen kontan...",
+    "aboutTitle": "Konsènan BibSlide",
+    "aboutSubtitle": "BibSlide se yon zouti kreye pou ede legliz yo sèvi Bondye ak teknoloji. Chak don ou fè ede nou kontinye amelyore platfòm la, kenbe li gratis pou tout legliz, epi ajoute nouvo fonksyon tankou mizik ak prezantasyon biblik.",
+    "electronicDonation": "Donasyon Elektwonik",
+    "bankTransfer": "Transfè Bancaire",
+    "bibleQuote": "“Bondye renmen moun ki bay ak kè kontan.” — 2 Korentyen 9:7",
+    "poweredBy": "Powered by",
+    "copyright": "© 2026 BibSlide — Zouti pou Legliz.",
+    "bible": "Bib",
+    "paste": "Kole",
+    "manual": "Manyèl",
+    "churchName": "Non Legliz la (opsyonèl)",
+    "versesPerSlide": "Vèsè pa Slide",
+    "selectTheme": "Chwazi Tèm",
+    "oneVersePerSlide": "Vèsè pa Slide",
+    "twoVersesPerSlide": "Vèsè pa Slide",
+    "threeVersesPerSlide": "Vèsè pa Slide",
+    "fourVersesPerSlide": "Vèsè pa Slide",
+    "themeLight": "Limyè",
+    "themeDark": "Nwa",
+    "themeWorship": "Adorasyon",
+    "themeNature": "Lanati",
+    "recentSearches": "Rechèch Resan",
+    "pastedText": "Kole tèks ou isit la...",
+    "slideStyle": "Stil Slide",
+    "bgColor": "Koulè Fon",
+    "textColor": "Koulè Tèks",
+    "brightness": "Liminozite",
+    "bgImage": "Imaj Fon",
+    "uploadImage": "Upload Imaj",
+    "removeImage": "Retire Imaj",
+    "editPassage": "Modifye pasaj la"
+  },
+  "auth": {
+    "back": "Tounen",
+    "welcomeBack": "Byenveni ankò!",
+    "createAccount": "Kreye yon kont",
+    "loginSubtitle": "Konekte pou jere prezantasyon ou yo.",
+    "signupSubtitle": "Kòmanse itilize BibSlide jodi a.",
+    "emailLabel": "Email",
+    "passwordLabel": "Modpas",
+    "loginButton": "Konekte",
+    "signupButton": "Enskri",
+    "googleLogin": "Konekte ak Google",
+    "googleSignup": "Enskri ak Google",
+    "noAccount": "Ou pa gen kont? Enskri",
+    "haveAccount": "Ou gen yon kont deja? Konekte",
+    "checkEmail": "Tcheke email ou pou konfime enskripsyon an!",
+    "searchPassage": "Chèche Pasaj",
+    "searchSong": "Chèche Chante",
+    "pasteText": "Kole Tèks",
+    "pastePlaceholder": "Kole chante ou oswa pasaj biblik ou isit la...",
+    "searchError": "Erè Rechèch",
+    "textPreview": "Apèsi Tèks",
+    "pasteConvert": "Kole & Konvèti",
+    "nothingHere": "Pa gen anyen isit la ankò",
+    "nothingHereSubtitle": "Antre yon pasaj biblik nan bwat rechèch la pou kòmanse kreye slide ou yo.",
+    "searchingBible": "Biblia ap chèche vèsè yo...",
+    "searchingSong": "N ap chèche chante a..."
+  },
+  "contact": {
+    "title": "Kontakte nou",
+    "subtitle": "Ou gen yon kesyon oswa yon sijesyon? Voye yon mesaj ban nou epi n ap reponn ou pi vit posib.",
+    "name": "Non",
+    "email": "Email",
+    "message": "Mesaj",
+    "send": "Voye Mesaj"
+  },
+  "dashboard": {
+    "welcome": "Byenveni ankò",
+    "subtitle": "Jere prezantasyon ou yo ak modèl ou yo nan espas pèsonèl ou.",
+    "createNew": "Kreye Nouvo Slide",
+    "overview": "Apèsi",
+    "presentations": "Prezantasyon Mwen yo",
+    "templates": "Modèl Mwen yo",
+    "settings": "Paramèt",
+    "recentPresentations": "Prezantasyon Resan",
+    "savedTemplates": "Modèl Sove",
+    "externalResources": "Resous Ekstèn",
+    "externalResourcesSubtitle": "Aksede lòt zouti biblik dirèkteman nan tablo de bò ou.",
+    "myPresentations": "Prezantasyon Mwen yo",
+    "newPresentation": "Nouvo Prezantasyon",
+    "myTemplates": "Modèl Mwen yo",
+    "accountSettings": "Paramèt Kont",
+    "stats": {
+      "slides": "Slide yo",
+      "templates": "Modèl yo",
+      "songs": "Chante yo",
+      "activeDays": "Jou Aktif"
+    },
+    "analytics": {
+      "title": "Analiz Aktivite",
+      "weekly": "Chak Semèn",
+      "monthly": "Chak Mwa",
+      "slidesCreated": "Slide ki Kreye",
+      "songsAdded": "Chante ki Ajoute",
+      "templatesSaved": "Modèl ki Sove"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 BibSlide — Zouti pou Legliz | Outil pour l’Église | Herramienta para la Iglesia"
+  },
+  "messages": {
+    "errorSearch": "Vèsè sa a pa jwenn nan Biblia.com",
+    "errorAPI": "Gen yon pwoblèm ki rive. Tanpri eseye ankò.",
+    "errorNoVerse": "Vèsè sa a pa jwenn.",
+    "errorOffline": "Vèsè sa a pa jwenn (Offline).",
+    "successAdd": "Vèsè ajoute nan slide!",
+    "bibleSearchLoading": "Biblia ap chèche vèsè yo...",
+    "songSearchNotAvailable": "Rechèch chante pa disponib kounye a.",
+    "bibleSearchPlaceholder": "Chèche yon vèsè (eg: Jan 3:16 oswa Sòm 23:1)",
+    "pastePlaceholder": "Kole vèsè biblik oswa pawòl chante isit la...",
+    "noTemplates": "Pa gen modèl sove ankò.",
+    "logoutSubtitle": "Dekonekte de tout aparèy ou yo.",
+    "noVerses": "Nou pa jwenn vèsè sa yo. Tanpri tcheke referans lan.",
+    "noSong": "Nou pa jwenn chante sa a. Tanpri tcheke tit oswa nimewo a.",
+    "errorFetching": "Gen yon erè ki fèt. Tanpri re-eseye ankò."
+  },
+  "hero": {
+    "title": "Mete Pawòl la sou Ekran an san efò.",
+    "subtitle": "BibSlide ede legliz yo transfòme vèsè Biblik ak chante an bèl prezantasyon PowerPoint nan kèk segonn.",
+    "cta": "⭐ Eseye BibSlide Kounye a",
+    "watchTutorial": "🎥 Gade Tutoriel la",
+    "benefits": [
+      "Konvèti vèsè Biblik otomatikman",
+      "Export kòm .pptx oswa PDF",
+      "Live view + mobile remote control",
+      "Template pwofesyonèl pou legliz"
+    ]
+  },
+  "mission": {
+    "title": "Bay Legliz yo Pouvwa pou yo Kreye san Limit",
+    "text": "Chak ane, legliz yo depanse dè milye dola nan lojisyèl prezantasyon. BibSlide fèt pou ofri yon solisyon gratis ak modèn, pou fon yo ka sèvi misyon an, pa lisans yo."
+  },
+  "features": {
+    "title": "Senp. Pwisan. Fèt pou Adorasyon.",
+    "subtitle": "Tout sa ou bezwen pou jere pwojeksyon pawòl la ak mizik la nan yon sèl kote.",
+    "bible": {
+      "title": "Rechèch Biblik",
+      "desc": "Mete vèsè Biblik imedyatman nan plizyè lang (FR/EN/ES)."
+    },
+    "songs": {
+      "title": "Enpòtasyon Chante & Pawòl",
+      "desc": "Ajoute pawòl louanj byen vit soti nan Cesperance oswa pa antre manyèl."
+    },
+    "templates": {
+      "title": "Modèl & Stil",
+      "desc": "Chwazi nan tèm PowerPoint ki pwòp epi elegan ki pare pou ekspòte."
+    },
+    "remote": {
+      "title": "Kontwòl Mobil",
+      "desc": "Kontwole slide ou yo dirèkteman nan telefòn mobil ou."
+    },
+    "timer": {
+      "title": "Minuteur Countdown",
+      "desc": "Montre countdown pou sèvis ak evènman yo."
+    },
+    "cloud": {
+      "title": "Sove nan Cloud",
+      "desc": "Tout slide ak modèl ou yo sove nan cloud Supabase."
+    }
+  },
+  "tutorial": {
+    "title": "Gade BibSlide an Aksyon 🎬",
+    "subtitle": "Aprann kijan pou kreye bèl prezantasyon legliz nan kèk minit sèlman."
+  },
+  "comparison": {
+    "title": "Kijan BibSlide Konpare ak Lòt Zouti Prezantasyon Legliz",
+    "subtitle": "Dekouvri kijan BibSlide kanpe — gratis, multilingual, baze sou cloud, epi fèt pou legliz toupatou.",
+    "headers": ["Feature / Fonksyon", "BibSlide", "FreeShow", "ProPresenter", "EasyWorship"],
+    "rows": [
+      ["💰 Free / Gratis", "✔️ Wi", "✔️ Wi", "❌ Non ($289 / ane)", "❌ Non ($180 / ane)"],
+      ["☁️ Cloud-Based Web App", "✔️ Wi (pa bezwen enstale)", "❌ Desktop sèlman", "❌ Desktop sèlman", "❌ Desktop sèlman"],
+      ["🌍 Multilingual (FR/EN/ES)", "✔️ Wi", "✔️ Pasèl", "❌ Non", "❌ Non"],
+      ["📖 Bible Verse Integration", "✔️ Auto Bible API", "✔️ Local Bible", "✔️ Enkli", "✔️ Enkli"],
+      ["🎵 Song Import (Cesperance)", "✔️ Import dirèk", "✔️ Manyèl", "✔️ Manyèl", "✔️ Manyèl"],
+      ["🎨 Templates & Themes", "✔️ Cloud templates", "✔️ Local", "✔️ Limite", "✔️ Limite"],
+      ["📱 Mobile Remote Control", "✔️ Cloud sync (Realtime)", "✔️ Local network", "✔️ Local network", "❌ Non"],
+      ["⏱️ Countdown / Timer", "✔️ Built-in", "✔️ Built-in", "✔️ Built-in", "✔️ Built-in"],
+      ["🧑‍🤝‍🧑 Collaboration / Cloud Sync", "✔️ Supabase Realtime", "✔️ Limite", "✔️ Pro-Plan", "❌ Non"],
+      ["📤 Export PPTX / PDF", "✔️ Wi", "❌ Non", "✔️ Wi", "✔️ Wi"]
+    ]
+  },
+  "howItWorks": {
+    "title": "3 Etap Pou Kreye Prezantasyon Eksepsyonèl",
+    "step1": {
+      "title": "Etap 1",
+      "desc": "🔍 Chèche yon vèsè Biblik ou vle — eg. “Jean 3:16.”"
+    },
+    "step2": {
+      "title": "Etap 2",
+      "desc": "🎨 Customize slide la — chwazi font, koulè, background, chante, etc."
+    },
+    "step3": {
+      "title": "Etap 3",
+      "desc": "📥 Eksport kòm .pptx oswa PDF — pare pou sèvi nan legliz oswa pataje."
+    }
+  },
+  "testimonials": {
+    "title": "Sa Lòt Legliz Ap Di",
+    "items": [
+      {
+        "quote": "BibSlide fè travay prezantasyon nou an vin senp — pati Bible Search ak export PPTX se jwèt san efò!",
+        "author": "Pastè Jean"
+      },
+      {
+        "quote": "Yon zouti ki reyèlman gratis, e fasil pou tout moun itilize.",
+        "author": "Ministè Adorasyon"
+      }
+    ]
+  },
+  "ctaSection": {
+    "title": "Kòmanse Kreye Premye Prezantasyon Biblik Ou Jodi a ✨",
+    "button1": "🔹 Kòmanse",
+    "button2": "🔹 Sipòte pa Donasyon",
+    "subtext": "100% Gratis • Multilingual • Pou Chak Legliz"
+  },
+  "presentation": {
+    "title": "🎤 Prezantasyon an Dirèk",
+    "next": "Apre",
+    "previous": "Anvan",
+    "start": "Kòmanse Prezantasyon",
+    "remote": "📱 Kontwòl Mobil",
+    "scan": "Skane pou konekte",
+    "fullscreen": "Ekran Plen",
+    "exit": "Soti",
+    "current": "Slide Kounye a",
+    "nextPreview": "Slide Apre",
+    "timer": "Minuteur",
+    "audience": "View Oditwa",
+    "presenter": "View Prezantatè",
+    "connecting": "Ap Konekte...",
+    "connected": "Konekte",
+    "disconnected": "Dekonekte",
+    "invalidSession": "Sesyon sa a pa bon ankò",
+    "goToSlide": "Ale nan Slide #",
+    "stop": "Sispann Prezantasyon"
+  },
+  "donation": {
+    "title": "Soutni Misyon an 💝",
+    "subtitle": "Donasyon ou ede nou kenbe BibSlide gratis pou tout legliz atravè mond lan.",
+    "paypal": "Donate via PayPal",
+    "stripe": "Donate via Stripe",
+    "sidebarSubtitle": "Soutni BibSlide pou ede nou grandi."
+  },
+  "about": {
+    "title": "Sou BibSlide",
+    "tagline": "Zouti modèn pou prezantasyon legliz yo",
+    "description1": "<strong>BibSlide</strong> se yon zouti kreyatif devlope pa <strong>Wanky Massenat</strong> pou ede pastè, chantè, ak ekip teknik legliz yo prepare bèl prezantasyon biblik avèk efikasite ak enspirasyon.",
+    "description2": "Objektif nou se pote <em class='text-indigo-600 font-bold'>Teknoloji ak Lafwa</em> ansanm pou sèvi Bondye avèk ekselans.",
+    "description3": "Avèk BibSlide, ou kapab chèche vèsè, chante, oswa pasaj biblik, epi transfòme yo otomatikman an <strong>slide PowerPoint (.pptx)</strong> oswa <strong>PDF</strong> pou pwojeksyon pandan adorasyon. Zouti a fasil pou itilize, vit, epi konpatib ak aparèy mobil, òdinatè, ak pwojektè.",
+    "missionTitle": "Misyon nou",
+    "missionDesc": "Misyon BibSlide se ede legliz yo sèvi ak zouti dijital modèn pou fè <strong>kominikasyon espirityèl</strong> yo plis atiran, senp, epi aksè a tout moun — san depans peye oswa konpleksite teknik. Nou kwè <strong>paròl Bondye</strong> merite prezante avèk bèlte ak respè.",
+    "featuresTitle": "Fonksyon prensipal yo",
+    "features": [
+      "🔎 Rechèch vèsè otomatik (Bible API)",
+      "🎵 Chant d’Espérance entegre",
+      "🎨 Entegrasyon ak Canva",
+      "📤 Ekspòtasyon PPTX, PDF, Imaj",
+      "🔊 Text-to-Speech pou li vèsè",
+      "🕊️ Mode prezantasyon fullscreen",
+      "💾 Sove modèl pèsonèl ou"
+    ],
+    "developerTitle": "Sou devlopè a",
+    "developerDesc": "<strong>Wanky Massenat</strong> se yon medsen, devlopè, ak kreyatè pasyone ki kwè nan pouvwa Bondye ak teknoloji. Li se fondatè <strong>Wanky Academy</strong> ak kreyatè <strong>Belmagg Company LLC</strong>. Misyon li se sèvi Bondye ak konpetans dijital pou transfòme kominote a.",
+    "supportEmail": "📩 support@bibleslide.org",
+    "makeDonation": "💝 Fè yon donasyon",
+    "visitOfficial": "🌐 Vizite sit ofisyèl"
+  },
+  "terms": {
+    "title": "Kondisyon Itilizasyon – BibSlide",
+    "section1Title": "1. Objektif platfòm nan",
+    "section1Desc": "BibSlide se yon zouti kreye pa <strong>Wanky Massenat</strong> pou ede legliz, predikatè, ak moun k ap sèvi Bondye prezante vèsè biblik fasilman pandan sèvis, konferans, oswa etid biblik. Platfòm nan fèt pou sèvi kòm yon sipò teknik ak espirityèl — pa kòm yon zouti komèsyal.",
+    "section2Title": "2. Dwa itilizasyon",
+    "section2Item1": "Ou gen dwa sèvi ak BibSlide pou kreye prezantasyon pèsonèl oswa legliz ou.",
+    "section2Item2": "Ou <strong>pa gen dwa</strong> vann oswa redistribye aplikasyon an oswa fichye .pptx ki sòti ladan l kòm yon sèvis peye san pèmisyon ekriven an.",
+    "section2Item3": "Tout tèks biblik yo sòti nan tradiksyon piblik (Bib Kreyòl 1985, Louis Segond 1910, oswa King James Version) epi rete pwopriyete piblik.",
+    "section3Title": "3. Responsablite itilizatè a",
+    "section3Item1": "Itilizatè a responsab fason li itilize kontni an pandan sèvis oswa piblikasyon.",
+    "section3Item2": "BibSlide pa responsab pou okenn move itilizasyon oswa erè nan vèsè yo.",
+    "section3Item3": "Itilizatè a dwe respekte pawòl Bondye avèk respè ak entegrite.",
+    "section4Title": "4. Done ak vi prive",
+    "section4Item1": "BibSlide <strong>pa kolekte okenn enfòmasyon pèsonèl</strong>.",
+    "section4Item2": "Tout jenerasyon kontni fèt atravè Biblia.com API ki itilize done biblik piblik.",
+    "section4Item3": "Pa gen done itilizatè ki estoke sou serveurs ekstèn san konsantman.",
+    "section5Title": "5. Modifikasyon kondisyon yo",
+    "section5Desc": "Wanky Massenat gen dwa modifye kondisyon itilizasyon yo nenpòt moman pou amelyore sèvis la oswa ajoute nouvo fonksyon. Tout chanjman ap pibliye sou paj sa a.",
+    "section6Title": "6. Akseptasyon",
+    "section6Desc": "Lè w itilize BibSlide, ou dakò ak tout kondisyon ki ekri nan dokiman sa a. Si ou pa dakò, tanpri sispann itilize platfòm nan."
+  },
+  "privacy": {
+    "title": "Politik Konfidansyalite",
+    "desc1": "BibSlide respekte vi prive chak itilizatè.",
+    "desc2": "Nou pa kolekte, pa vann, e pa pataje okenn done pèsonèl. Tout operasyon fèt lokalman oswa atravè sèvis <strong>Biblia.com API</strong> sèlman pou rekipere tèks biblik piblik."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "BibSlide",
+  "short_name": "BibSlide",
+  "description": "Zouti pou Legliz ki pèmèt kreye prezantasyon ak vèsè Biblik, chante, ak imaj bèl nan kèk segonn.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/X7j5bZCj/biblslide.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/X7j5bZCj/biblslide.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
