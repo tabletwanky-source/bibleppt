@@ -46,6 +46,9 @@ import {
 import { logUserActivity } from "../services/activityService";
 import VerseOfDayWidget from "./VerseOfDayWidget";
 import GoogleSearchWidget from "./GoogleSearchWidget";
+import UserProfile from "./UserProfile";
+import PasswordChange from "./PasswordChange";
+import AdminPanel from "./AdminPanel";
 
 interface DashboardProps {
   user: any;
@@ -56,7 +59,8 @@ interface DashboardProps {
 
 export default function Dashboard({ user, onLogout, onCreateNew, darkMode }: DashboardProps) {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'overview' | 'presentations' | 'templates' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'presentations' | 'templates' | 'profile' | 'settings' | 'admin'>('overview');
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [presentations, setPresentations] = useState<any[]>([
     { id: 1, title: "Sermon: Lafwa nan Aksyon", date: "2026-02-22", type: "PDF" },
     { id: 2, title: "Sòm 23 Adorasyon", date: "2026-02-18", type: "PPTX" },
@@ -85,6 +89,18 @@ export default function Dashboard({ user, onLogout, onCreateNew, darkMode }: Das
 
   useEffect(() => {
     if (user) logUserActivity(user.id);
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setUserProfile(data);
+      });
   }, [user]);
 
   const processAnalytics = (slides: any[], songs: any[], templates: any[], range: 'weekly' | 'monthly') => {
@@ -902,61 +918,40 @@ export default function Dashboard({ user, onLogout, onCreateNew, darkMode }: Das
             </div>
           </div>
         );
+      case 'profile':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <UserProfile
+              user={user}
+              onProfileUpdate={(updated) => setUserProfile(updated)}
+            />
+          </div>
+        );
+
       case 'settings':
         return (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <Settings className="w-7 h-7 text-indigo-600" /> {t('dashboard.accountSettings')}
-            </h2>
-            
-            <div className="space-y-6">
-              <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
-                <h3 className="font-bold mb-4 flex items-center gap-2"><User className="w-4 h-4" /> {t('labels.profile')}</h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('contact.email')}</label>
-                    <div className={`px-4 py-3 rounded-xl border ${darkMode ? 'bg-slate-900 border-slate-700 text-slate-400' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
-                      {user?.email}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('labels.username')}</label>
-                    <input 
-                      type="text" 
-                      defaultValue={user?.email?.split('@')[0]}
-                      className={`w-full px-4 py-3 rounded-xl border outline-none focus:ring-2 focus:ring-indigo-500 transition-all ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-slate-50 border-slate-200'}`}
-                    />
-                  </div>
-                  <button className="bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all">{t('buttons.saveChanges')}</button>
-                  
-                  <div className="grid grid-cols-2 gap-4 pt-4 mt-4 border-t border-slate-100 dark:border-slate-700">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Total Templates</label>
-                      <div className="text-lg font-bold">{customTemplates.length}</div>
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Last Upload</label>
-                      <div className="text-lg font-bold">
-                        {customTemplates.length > 0 
-                          ? new Date(customTemplates[0].created_at).toLocaleDateString() 
-                          : 'N/A'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl space-y-8">
+            <PasswordChange />
 
-              <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
-                <h3 className="font-bold mb-4 flex items-center gap-2"><Shield className="w-4 h-4" /> {t('labels.security')}</h3>
-                <button className="text-sm font-bold text-indigo-600 hover:underline">{t('buttons.changePassword')}</button>
-              </div>
-
-              <div className={`p-6 rounded-3xl border border-red-100 bg-red-50/30`}>
-                <h3 className="font-bold mb-2 text-red-600 flex items-center gap-2"><LogOut className="w-4 h-4" /> {t('buttons.logout')}</h3>
-                <p className="text-xs text-slate-500 mb-4">{t('messages.logoutSubtitle')}</p>
-                <button onClick={onLogout} className="bg-red-500 text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-red-600 transition-all">{t('buttons.logoutNow')}</button>
-              </div>
+            <div className={`p-6 rounded-3xl border border-red-100 bg-red-50/30`}>
+              <h3 className="font-bold mb-2 text-red-600 flex items-center gap-2">
+                <LogOut className="w-4 h-4" /> {t('buttons.logout')}
+              </h3>
+              <p className="text-xs text-slate-500 mb-4">{t('messages.logoutSubtitle')}</p>
+              <button
+                onClick={onLogout}
+                className="bg-red-500 text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-red-600 transition-all"
+              >
+                {t('buttons.logoutNow')}
+              </button>
             </div>
+          </div>
+        );
+
+      case 'admin':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <AdminPanel />
           </div>
         );
     }
@@ -967,39 +962,116 @@ export default function Dashboard({ user, onLogout, onCreateNew, darkMode }: Das
       {/* Sidebar Navigation */}
       <div className="flex">
         <aside className={`hidden lg:flex flex-col w-64 h-screen sticky top-0 border-r transition-colors ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-          <div className="p-8">
-            <div className="flex items-center gap-2 mb-12">
-              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
+          <div className="p-6 flex flex-col gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none">
                 <Layout className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-black tracking-tighter">BibSlide</h1>
             </div>
 
-            <nav className="space-y-2">
+            {/* User Profile Card */}
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`w-full flex items-center gap-3 p-3 rounded-2xl transition-all text-left ${
+                activeTab === 'profile'
+                  ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500/30'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shrink-0 overflow-hidden">
+                {userProfile?.avatar_url ? (
+                  <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-white text-sm font-bold">
+                    {(userProfile?.full_name || user?.email || 'U').charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm truncate">
+                  {userProfile?.full_name || user?.email?.split('@')[0] || 'User'}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                    userProfile?.role === 'admin'
+                      ? 'bg-amber-100 text-amber-700'
+                      : 'bg-slate-100 text-slate-500'
+                  }`}>
+                    {userProfile?.role === 'admin' ? 'Admin' : 'User'}
+                  </span>
+                </div>
+              </div>
+            </button>
+
+            <nav className="space-y-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-3 mb-2">Main</p>
               {[
                 { id: 'overview', label: t('nav.overview'), icon: Layout },
                 { id: 'presentations', label: t('nav.presentations'), icon: FileText },
                 { id: 'templates', label: t('nav.templates'), icon: Paintbrush },
-                { id: 'settings', label: t('nav.settings'), icon: Settings },
               ].map(item => (
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id as any)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${
-                    activeTab === item.id 
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-none' 
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                    activeTab === item.id
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-none'
+                      : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <item.icon className="w-5 h-5" />
+                  <item.icon className="w-4 h-4" />
                   {item.label}
                 </button>
               ))}
+
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-3 mt-4 mb-2">Account</p>
+              {[
+                { id: 'profile', label: 'Profile', icon: User },
+                { id: 'settings', label: 'Settings', icon: Settings },
+              ].map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id as any)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                    activeTab === item.id
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-none'
+                      : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
+                </button>
+              ))}
+
+              {userProfile?.role === 'admin' && (
+                <>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500 px-3 mt-4 mb-2">Administration</p>
+                  <button
+                    onClick={() => setActiveTab('admin')}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                      activeTab === 'admin'
+                        ? 'bg-amber-500 text-white shadow-md shadow-amber-200 dark:shadow-none'
+                        : 'text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+                    }`}
+                  >
+                    <Shield className="w-4 h-4" />
+                    Admin Panel
+                  </button>
+                </>
+              )}
             </nav>
           </div>
 
-          <div className="mt-auto p-8">
-            <section className={`p-6 rounded-3xl border transition-all ${darkMode ? 'bg-indigo-900/20 border-indigo-500/30' : 'bg-indigo-600 border-indigo-600 shadow-lg shadow-indigo-200'}`}>
+          <div className="mt-auto p-6 space-y-4">
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-semibold text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              {t('buttons.logout')}
+            </button>
+            <section className={`p-5 rounded-2xl border transition-all ${darkMode ? 'bg-indigo-900/20 border-indigo-500/30' : 'bg-blue-600 border-blue-600 shadow-lg shadow-blue-200'}`}>
               <h3 className={`text-sm font-bold flex items-center gap-2 mb-2 ${darkMode ? 'text-indigo-300' : 'text-white'}`}>
                 <HeartHandshake className="w-4 h-4" /> {t('nav.donation')}
               </h3>
@@ -1021,25 +1093,64 @@ export default function Dashboard({ user, onLogout, onCreateNew, darkMode }: Das
         </aside>
 
         {/* Main Content Area */}
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <header className={`sticky top-0 z-10 backdrop-blur-md border-b transition-colors lg:hidden ${darkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white/80 border-slate-200'}`}>
-            <div className="px-4 h-16 flex justify-between items-center">
+            <div className="px-4 h-14 flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <Layout className="w-6 h-6 text-indigo-600" />
-                <h1 className="text-xl font-black tracking-tighter">BibSlide</h1>
+                <Layout className="w-5 h-5 text-blue-600" />
+                <h1 className="text-lg font-black tracking-tighter">BibSlide</h1>
               </div>
-              <button onClick={onLogout} className="text-red-500 p-2"><LogOut className="w-5 h-5" /></button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveTab('profile')}
+                  className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center overflow-hidden"
+                >
+                  {userProfile?.avatar_url ? (
+                    <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-white text-xs font-bold">
+                      {(userProfile?.full_name || user?.email || 'U').charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
           </header>
 
-          <div className="p-4 sm:p-8 lg:p-12">
+          <div className="p-4 sm:p-8 lg:p-12 pb-24 lg:pb-12">
             {loading ? (
               <div className="flex items-center justify-center h-[60vh]">
-                <Clock className="w-8 h-8 text-indigo-600 animate-spin" />
+                <Clock className="w-8 h-8 text-blue-600 animate-spin" />
               </div>
             ) : (
               renderTabContent()
             )}
+          </div>
+
+          {/* Mobile Bottom Nav */}
+          <div className={`fixed bottom-0 left-0 right-0 z-20 lg:hidden border-t ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <div className="flex items-center justify-around px-2 py-2">
+              {[
+                { id: 'overview', label: 'Home', icon: Layout },
+                { id: 'presentations', label: 'Slides', icon: FileText },
+                { id: 'templates', label: 'Templates', icon: Paintbrush },
+                { id: 'profile', label: 'Profile', icon: User },
+                { id: 'settings', label: 'Settings', icon: Settings },
+              ].map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id as any)}
+                  className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
+                    activeTab === item.id
+                      ? 'text-blue-600'
+                      : 'text-slate-400'
+                  }`}
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span className="text-[10px] font-semibold">{item.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
