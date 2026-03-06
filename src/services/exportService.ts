@@ -1,197 +1,192 @@
-import { Slide } from './presentationService';
-import { getTheme } from '../config/themes';
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import PptxGenJS from 'pptxgenjs';
+import { Slide, Theme } from './presentationService';
 
 export const exportService = {
-  async exportToPPTX(slides: Slide[], theme: string, title: string): Promise<void> {
-    const pptx = new PptxGenJS();
-    const themeConfig = getTheme(theme);
-
-    pptx.author = 'BibleSlide';
-    pptx.title = title;
-    pptx.subject = 'Church Presentation';
-
-    for (const slide of slides) {
-      const pptxSlide = pptx.addSlide();
-      const slideTheme = slide.theme || themeConfig;
-      const background = slide.background || { type: 'color', value: themeConfig.backgroundColor };
-
-      if (background.type === 'color') {
-        pptxSlide.background = { color: background.value.replace('#', '') };
-      } else if (background.type === 'gradient') {
-        pptxSlide.background = { color: themeConfig.backgroundColor.replace('#', '') };
-      } else if (background.type === 'image') {
-        pptxSlide.background = { path: background.value };
-      }
-
-      const lines = slide.content.split('\n');
-      const fontSize = parseInt(slideTheme.fontSize) || 32;
-
-      pptxSlide.addText(lines, {
-        x: 0.5,
-        y: '40%',
-        w: '90%',
-        h: '20%',
-        fontSize: fontSize / 2,
-        fontFace: slideTheme.fontFamily?.split(',')[0] || 'Arial',
-        color: slideTheme.textColor?.replace('#', '') || 'FFFFFF',
-        align: 'center',
-        valign: 'middle',
-        bold: true,
-        shadow: slideTheme.textShadow ? {
-          type: 'outer',
-          blur: 8,
-          offset: 2,
-          angle: 90,
-          color: '000000',
-          opacity: 0.8
-        } : undefined
-      });
-    }
-
-    pptx.writeFile({ fileName: `${title}.pptx` });
-  },
-
-  async exportToPDF(slides: Slide[], theme: string, title: string, containerElement: HTMLElement): Promise<void> {
+  async exportToPDF(slides: Slide[], theme?: Theme, filename: string = 'presentation.pdf'): Promise<void> {
     const pdf = new jsPDF({
       orientation: 'landscape',
       unit: 'px',
       format: [1920, 1080]
     });
 
-    const themeConfig = getTheme(theme);
-
     for (let i = 0; i < slides.length; i++) {
-      const slide = slides[i];
-      const slideElement = this.createSlideElement(slide, themeConfig);
-      document.body.appendChild(slideElement);
-
-      const canvas = await html2canvas(slideElement, {
-        width: 1920,
-        height: 1080,
-        scale: 1,
-        backgroundColor: null
-      });
-
-      document.body.removeChild(slideElement);
-
-      const imgData = canvas.toDataURL('image/png');
-
       if (i > 0) {
         pdf.addPage();
       }
 
-      pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080);
+      const canvas = await this.slideToCanvas(slides[i], theme);
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+      pdf.addImage(imgData, 'JPEG', 0, 0, 1920, 1080);
     }
 
-    pdf.save(`${title}.pdf`);
+    pdf.save(filename);
   },
 
-  async exportToImages(slides: Slide[], theme: string, title: string): Promise<void> {
-    const themeConfig = getTheme(theme);
-    const zip: any[] = [];
-
+  async exportToImages(slides: Slide[], theme?: Theme): Promise<void> {
     for (let i = 0; i < slides.length; i++) {
-      const slide = slides[i];
-      const slideElement = this.createSlideElement(slide, themeConfig);
-      document.body.appendChild(slideElement);
-
-      const canvas = await html2canvas(slideElement, {
-        width: 1920,
-        height: 1080,
-        scale: 1,
-        backgroundColor: null
-      });
-
-      document.body.removeChild(slideElement);
-
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${title}_slide_${i + 1}.png`;
-          a.click();
-          URL.revokeObjectURL(url);
-        }
-      });
-
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const canvas = await this.slideToCanvas(slides[i], theme);
+      const link = document.createElement('a');
+      link.download = `slide-${i + 1}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
     }
   },
 
-  createSlideElement(slide: Slide, themeConfig: any): HTMLElement {
-    const div = document.createElement('div');
-    div.style.width = '1920px';
-    div.style.height = '1080px';
-    div.style.position = 'absolute';
-    div.style.left = '-9999px';
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
-    div.style.justifyContent = 'center';
-    div.style.padding = '80px';
-    div.style.boxSizing = 'border-box';
+  async exportToPowerPoint(slides: Slide[], theme?: Theme, filename: string = 'presentation.pptx'): Promise<void> {
+    const pptx = new PptxGenJS();
 
-    const slideTheme = slide.theme || themeConfig;
-    const background = slide.background || { type: 'color', value: themeConfig.backgroundColor };
+    pptx.layout = 'LAYOUT_16x9';
 
-    if (background.type === 'color') {
-      div.style.backgroundColor = background.value;
-    } else if (background.type === 'gradient') {
-      div.style.background = background.value;
-    } else if (background.type === 'image') {
-      div.style.backgroundImage = `url(${background.value})`;
-      div.style.backgroundSize = 'cover';
-      div.style.backgroundPosition = 'center';
+    for (const slide of slides) {
+      const pptxSlide = pptx.addSlide();
+
+      const bgColor = this.getBackgroundColor(slide, theme);
+      if (bgColor) {
+        pptxSlide.background = { color: bgColor };
+      }
+
+      if (slide.gradient || theme?.background_gradient) {
+        const gradient = slide.gradient || theme?.background_gradient;
+        pptxSlide.background = { fill: gradient };
+      }
+
+      if (slide.backgroundImage) {
+        pptxSlide.background = { path: slide.backgroundImage };
+      }
+
+      const textOptions: any = {
+        x: 0.5,
+        y: 2.5,
+        w: 9,
+        h: 3,
+        align: 'center',
+        valign: 'middle',
+        fontSize: theme?.font_size || 48,
+        color: this.hexToRgb(theme?.text_color || '#FFFFFF'),
+        fontFace: theme?.font_family || 'Arial',
+        bold: false,
+        breakLine: true
+      };
+
+      if (theme?.text_shadow) {
+        textOptions.shadow = {
+          type: 'outer',
+          blur: 8,
+          offset: 2,
+          angle: 45,
+          color: '000000',
+          opacity: 0.8
+        };
+      }
+
+      if (slide.reference) {
+        pptxSlide.addText(slide.reference, {
+          ...textOptions,
+          y: 1.5,
+          h: 0.5,
+          fontSize: (theme?.font_size || 48) * 0.6,
+          color: this.hexToRgb(theme?.text_color || '#FFFFFF'),
+          transparency: 20
+        });
+      }
+
+      pptxSlide.addText(slide.content, textOptions);
     }
 
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.inset = '0';
-    overlay.style.backgroundColor = `rgba(0, 0, 0, ${slideTheme.overlayOpacity || 0.3})`;
-    div.appendChild(overlay);
+    await pptx.writeFile({ fileName: filename });
+  },
+
+  async slideToCanvas(slide: Slide, theme?: Theme): Promise<HTMLCanvasElement> {
+    const container = document.createElement('div');
+    container.style.width = '1920px';
+    container.style.height = '1080px';
+    container.style.position = 'fixed';
+    container.style.left = '-9999px';
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'center';
+    container.style.padding = '80px';
+    container.style.textAlign = 'center';
+    container.style.fontFamily = theme?.font_family || 'Inter';
+    container.style.fontSize = `${theme?.font_size || 48}px`;
+    container.style.color = theme?.text_color || '#FFFFFF';
+    container.style.textShadow = theme?.text_shadow ? '2px 2px 8px rgba(0,0,0,0.8)' : 'none';
+
+    if (slide.backgroundImage) {
+      container.style.backgroundImage = `linear-gradient(rgba(0,0,0,${theme?.overlay_opacity || 0.3}), rgba(0,0,0,${theme?.overlay_opacity || 0.3})), url(${slide.backgroundImage})`;
+      container.style.backgroundSize = 'cover';
+      container.style.backgroundPosition = 'center';
+    } else if (slide.gradient || theme?.background_gradient) {
+      container.style.background = slide.gradient || theme?.background_gradient || '#000000';
+    } else {
+      container.style.backgroundColor = slide.backgroundColor || theme?.background_color || '#000000';
+    }
 
     const content = document.createElement('div');
-    content.style.position = 'relative';
-    content.style.zIndex = '10';
     content.style.maxWidth = '1600px';
-    content.style.textAlign = 'center';
-    content.style.fontFamily = slideTheme.fontFamily || 'Arial';
-    content.style.fontSize = slideTheme.fontSize || '48px';
-    content.style.color = slideTheme.textColor || '#ffffff';
-    content.style.lineHeight = '1.5';
-    content.style.whiteSpace = 'pre-wrap';
 
-    if (slideTheme.textShadow) {
-      content.style.textShadow = '0 2px 8px rgba(0,0,0,0.8)';
+    if (slide.reference) {
+      const reference = document.createElement('div');
+      reference.textContent = slide.reference;
+      reference.style.fontSize = `${(theme?.font_size || 48) * 0.6}px`;
+      reference.style.marginBottom = '30px';
+      reference.style.opacity = '0.9';
+      content.appendChild(reference);
     }
 
-    content.textContent = slide.content;
-    div.appendChild(content);
+    const text = document.createElement('div');
+    text.textContent = slide.content;
+    text.style.whiteSpace = 'pre-wrap';
+    text.style.lineHeight = '1.5';
+    content.appendChild(text);
 
-    return div;
+    container.appendChild(content);
+    document.body.appendChild(container);
+
+    const canvas = await html2canvas(container, {
+      width: 1920,
+      height: 1080,
+      scale: 1,
+      backgroundColor: null
+    });
+
+    document.body.removeChild(container);
+
+    return canvas;
   },
 
-  async importFromPPTX(file: File): Promise<Slide[]> {
+  getBackgroundColor(slide: Slide, theme?: Theme): string | null {
+    if (slide.backgroundColor) {
+      return slide.backgroundColor.replace('#', '');
+    }
+    if (theme?.background_color) {
+      return theme.background_color.replace('#', '');
+    }
+    return null;
+  },
+
+  hexToRgb(hex: string): string {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) return 'FFFFFF';
+    return result[1] + result[2] + result[3];
+  },
+
+  async importFromPowerPoint(file: File): Promise<Slide[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = async (e) => {
         try {
           const slides: Slide[] = [];
-          const slideCount = 10;
 
-          for (let i = 0; i < slideCount; i++) {
-            slides.push({
-              id: crypto.randomUUID(),
-              content: `Imported slide ${i + 1}\n\n(PPTX import is limited - please manually edit the content)`
-            });
-          }
+          alert('PowerPoint import is a complex feature that requires server-side processing. For now, please use the manual slide creation tools.');
 
           resolve(slides);
         } catch (error) {
+          console.error('Error importing PowerPoint:', error);
           reject(error);
         }
       };

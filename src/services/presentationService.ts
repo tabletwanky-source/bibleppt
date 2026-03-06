@@ -2,18 +2,14 @@ import { supabase } from '../supabaseClient';
 
 export interface Slide {
   id: string;
+  type: 'verse' | 'lyrics' | 'custom' | 'title';
   content: string;
-  background?: {
-    type: 'color' | 'gradient' | 'image' | 'video';
-    value: string;
-  };
-  theme?: {
-    fontFamily?: string;
-    fontSize?: string;
-    textColor?: string;
-    textShadow?: boolean;
-    overlayOpacity?: number;
-  };
+  reference?: string;
+  backgroundImage?: string;
+  backgroundVideo?: string;
+  backgroundColor?: string;
+  gradient?: string;
+  customStyles?: Record<string, any>;
 }
 
 export interface Presentation {
@@ -21,14 +17,33 @@ export interface Presentation {
   user_id: string;
   title: string;
   slides: Slide[];
-  theme: string;
+  theme_id?: string;
+  settings: {
+    autoSplit?: boolean;
+    transitionSpeed?: number;
+    [key: string]: any;
+  };
   created_at: string;
   updated_at: string;
-  is_template: boolean;
+}
+
+export interface Theme {
+  id: string;
+  user_id?: string;
+  name: string;
+  is_system: boolean;
+  font_family: string;
+  font_size: number;
+  text_color: string;
+  background_color: string;
+  background_gradient?: string;
+  text_shadow: boolean;
+  overlay_opacity: number;
+  settings: Record<string, any>;
 }
 
 export const presentationService = {
-  async createPresentation(title: string, slides: Slide[], theme: string = 'classic'): Promise<Presentation | null> {
+  async createPresentation(title: string, slides: Slide[] = []): Promise<Presentation | null> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return null;
 
@@ -38,7 +53,7 @@ export const presentationService = {
         user_id: user.id,
         title,
         slides,
-        theme
+        settings: {}
       })
       .select()
       .single();
@@ -51,28 +66,12 @@ export const presentationService = {
     return data;
   },
 
-  async updatePresentation(id: string, updates: Partial<Presentation>): Promise<Presentation | null> {
-    const { data, error } = await supabase
-      .from('presentations')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating presentation:', error);
-      return null;
-    }
-
-    return data;
-  },
-
   async getPresentation(id: string): Promise<Presentation | null> {
     const { data, error } = await supabase
       .from('presentations')
       .select('*')
       .eq('id', id)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error fetching presentation:', error);
@@ -82,14 +81,10 @@ export const presentationService = {
     return data;
   },
 
-  async getUserPresentations(): Promise<Presentation[]> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
-
+  async getAllPresentations(): Promise<Presentation[]> {
     const { data, error } = await supabase
       .from('presentations')
       .select('*')
-      .eq('user_id', user.id)
       .order('updated_at', { ascending: false });
 
     if (error) {
@@ -100,15 +95,45 @@ export const presentationService = {
     return data || [];
   },
 
+  async updatePresentation(id: string, updates: Partial<Presentation>): Promise<boolean> {
+    const { error } = await supabase
+      .from('presentations')
+      .update(updates)
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error updating presentation:', error);
+      return false;
+    }
+
+    return true;
+  },
+
   async duplicatePresentation(id: string): Promise<Presentation | null> {
     const original = await this.getPresentation(id);
     if (!original) return null;
 
-    return this.createPresentation(
-      `${original.title} (Copy)`,
-      original.slides,
-      original.theme
-    );
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from('presentations')
+      .insert({
+        user_id: user.id,
+        title: `${original.title} (Copy)`,
+        slides: original.slides,
+        theme_id: original.theme_id,
+        settings: original.settings
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error duplicating presentation:', error);
+      return null;
+    }
+
+    return data;
   },
 
   async deletePresentation(id: string): Promise<boolean> {
@@ -125,22 +150,42 @@ export const presentationService = {
     return true;
   },
 
-  async getTemplates(): Promise<Presentation[]> {
+  async getAllThemes(): Promise<Theme[]> {
     const { data, error } = await supabase
-      .from('presentations')
+      .from('themes')
       .select('*')
-      .eq('is_template', true);
+      .order('is_system', { ascending: false });
 
     if (error) {
-      console.error('Error fetching templates:', error);
+      console.error('Error fetching themes:', error);
       return [];
     }
 
     return data || [];
-  }
-};
+  },
 
-export const mediaService = {
+  async createTheme(theme: Omit<Theme, 'id' | 'user_id' | 'is_system'>): Promise<Theme | null> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from('themes')
+      .insert({
+        ...theme,
+        user_id: user.id,
+        is_system: false
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating theme:', error);
+      return null;
+    }
+
+    return data;
+  },
+
   async uploadMedia(file: File): Promise<string | null> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return null;
@@ -148,47 +193,34 @@ export const mediaService = {
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-    const { error: uploadError } = await supabase.storage
+    const { data, error } = await supabase.storage
       .from('presentation-media')
       .upload(fileName, file);
 
-    if (uploadError) {
-      console.error('Error uploading media:', uploadError);
+    if (error) {
+      console.error('Error uploading media:', error);
       return null;
     }
 
-    const { data: { publicUrl } } = supabase.storage
+    const { data: urlData } = supabase.storage
       .from('presentation-media')
-      .getPublicUrl(fileName);
+      .getPublicUrl(data.path);
 
-    const fileType = file.type.startsWith('image/') ? 'image' :
-                     file.type.startsWith('video/') ? 'video' : 'audio';
+    await supabase.from('media_files').insert({
+      user_id: user.id,
+      filename: file.name,
+      storage_path: data.path,
+      file_type: file.type.startsWith('image/') ? 'image' : 'video',
+      file_size: file.size
+    });
 
-    const { error: dbError } = await supabase
-      .from('media_files')
-      .insert({
-        user_id: user.id,
-        filename: file.name,
-        storage_path: fileName,
-        file_type: fileType,
-        file_size: file.size
-      });
-
-    if (dbError) {
-      console.error('Error saving media record:', dbError);
-    }
-
-    return publicUrl;
+    return urlData.publicUrl;
   },
 
   async getUserMedia(): Promise<any[]> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
-
     const { data, error } = await supabase
       .from('media_files')
       .select('*')
-      .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -199,116 +231,30 @@ export const mediaService = {
     return data || [];
   },
 
-  async deleteMedia(id: string, storagePath: string): Promise<boolean> {
-    const { error: storageError } = await supabase.storage
-      .from('presentation-media')
-      .remove([storagePath]);
-
-    if (storageError) {
-      console.error('Error deleting from storage:', storageError);
-      return false;
-    }
-
-    const { error: dbError } = await supabase
-      .from('media_files')
-      .delete()
-      .eq('id', id);
-
-    if (dbError) {
-      console.error('Error deleting media record:', dbError);
-      return false;
-    }
-
-    return true;
-  }
-};
-
-export const sessionService = {
-  async createSession(presentationId: string): Promise<any> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return null;
-
-    const { data, error } = await supabase
-      .from('presentation_sessions')
-      .insert({
-        presentation_id: presentationId,
-        user_id: user.id,
-        current_slide_index: 0,
-        is_active: true
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error creating session:', error);
-      return null;
-    }
-
-    return data;
+  generateSlidesFromVerses(verses: any[]): Slide[] {
+    return verses.map(verse => ({
+      id: crypto.randomUUID(),
+      type: 'verse',
+      content: verse.text,
+      reference: `${verse.book} ${verse.chapter}:${verse.verse}`
+    }));
   },
 
-  async updateSessionSlide(sessionId: string, slideIndex: number): Promise<boolean> {
-    const { error } = await supabase
-      .from('presentation_sessions')
-      .update({ current_slide_index: slideIndex })
-      .eq('id', sessionId);
-
-    if (error) {
-      console.error('Error updating session:', error);
-      return false;
+  generateSlidesFromLyrics(lyrics: string, autoSplit: boolean = true): Slide[] {
+    if (!autoSplit) {
+      return [{
+        id: crypto.randomUUID(),
+        type: 'lyrics',
+        content: lyrics.trim()
+      }];
     }
 
-    return true;
-  },
+    const paragraphs = lyrics.split(/\n\s*\n/).filter(p => p.trim());
 
-  async endSession(sessionId: string): Promise<boolean> {
-    const { error } = await supabase
-      .from('presentation_sessions')
-      .update({
-        is_active: false,
-        ended_at: new Date().toISOString()
-      })
-      .eq('id', sessionId);
-
-    if (error) {
-      console.error('Error ending session:', error);
-      return false;
-    }
-
-    return true;
-  },
-
-  async getActiveSession(presentationId: string): Promise<any> {
-    const { data, error } = await supabase
-      .from('presentation_sessions')
-      .select('*')
-      .eq('presentation_id', presentationId)
-      .eq('is_active', true)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Error fetching session:', error);
-      return null;
-    }
-
-    return data;
-  },
-
-  subscribeToSession(sessionId: string, callback: (payload: any) => void) {
-    const channel = supabase
-      .channel(`session-${sessionId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'presentation_sessions',
-          filter: `id=eq.${sessionId}`
-        },
-        callback
-      )
-      .subscribe();
-
-    return channel;
+    return paragraphs.map(paragraph => ({
+      id: crypto.randomUUID(),
+      type: 'lyrics',
+      content: paragraph.trim()
+    }));
   }
 };
