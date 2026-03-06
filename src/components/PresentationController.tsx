@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Presentation, presentationService, sessionService } from '../services/presentationService';
+import { Presentation, presentationService } from '../services/presentationService';
+import { sessionService } from '../services/sessionService';
 import SlideEditor from './SlideEditor';
 import FullScreenPresentation from './FullScreenPresentation';
 import PresentationManager from './PresentationManager';
