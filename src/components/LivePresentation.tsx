@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Maximize2, 
-  Minimize2, 
-  Smartphone, 
-  X, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  Minimize2,
+  Smartphone,
+  X,
   Timer,
   Play,
   Square,
@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '../supabaseClient';
 import { useLanguage } from '../i18n/LanguageContext';
+import { RemoteControlManager } from './RemoteControlManager';
 
 interface LivePresentationProps {
   slides: { header?: string; content: string; slideNumber?: number }[];
@@ -48,6 +49,7 @@ export default function LivePresentation({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showRemoteModal, setShowRemoteModal] = useState(false);
+  const [showRemoteManager, setShowRemoteManager] = useState(false);
   const [showPresenterNotes, setShowPresenterNotes] = useState(true);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -193,6 +195,14 @@ export default function LivePresentation({
     ? `http://${networkInfo.localIp}:${networkInfo.port}/viewer?session=${sessionId}`
     : `${window.location.origin}/viewer?session=${sessionId}`;
 
+  const handleRemoteCommand = (command: 'next' | 'previous') => {
+    if (command === 'next') {
+      setCurrentIndex(prev => Math.min(slides.length - 1, prev + 1));
+    } else if (command === 'previous') {
+      setCurrentIndex(prev => Math.max(0, prev - 1));
+    }
+  };
+
   const currentSlide = slides[currentIndex];
   const nextSlide = currentIndex < slides.length - 1 ? slides[currentIndex + 1] : null;
 
@@ -229,9 +239,9 @@ export default function LivePresentation({
           >
             {showPresenterNotes ? <Eye size={20} /> : <EyeOff size={20} />}
           </button>
-          <button 
-            onClick={() => setShowRemoteModal(true)}
-            className={`p-2 rounded-lg transition-colors flex items-center gap-2 ${showRemoteModal ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800 text-slate-400 hover:text-white'}`}
+          <button
+            onClick={() => setShowRemoteManager(true)}
+            className={`p-2 rounded-lg transition-colors flex items-center gap-2 ${showRemoteManager ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800 text-slate-400 hover:text-white'}`}
             title={t('presentation.remote')}
           >
             <Smartphone size={20} />
@@ -415,24 +425,55 @@ export default function LivePresentation({
         </div>
       </div>
 
-      {/* Remote Control Modal */}
+      {/* Remote Control Manager Modal */}
+      <AnimatePresence>
+        {showRemoteManager && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowRemoteManager(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative bg-white rounded-2xl p-8 max-w-3xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowRemoteManager(false)}
+                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors z-10"
+              >
+                <X size={20} />
+              </button>
+
+              <RemoteControlManager onCommandReceived={handleRemoteCommand} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Legacy Remote Control Modal (WebSocket) */}
       <AnimatePresence>
         {showRemoteModal && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowRemoteModal(false)}
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="relative bg-white rounded-2xl p-8 max-w-sm w-full text-center"
             >
-              <button 
+              <button
                 onClick={() => setShowRemoteModal(false)}
                 className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"
               >

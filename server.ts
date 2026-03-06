@@ -54,7 +54,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/network-info", (req, res) => {
   const interfaces = os.networkInterfaces();
   let localIp = "localhost";
-  
+
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]!) {
       if (iface.family === "IPv4" && !iface.internal) {
@@ -64,8 +64,25 @@ app.get("/api/network-info", (req, res) => {
     }
     if (localIp !== "localhost") break;
   }
-  
+
   res.json({ localIp, port: PORT });
+});
+
+app.get("/api/local-ip", (req, res) => {
+  const interfaces = os.networkInterfaces();
+  let localIp = "localhost";
+
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]!) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        localIp = iface.address;
+        break;
+      }
+    }
+    if (localIp !== "localhost") break;
+  }
+
+  res.json({ ip: localIp });
 });
 
 // WebSocket Server

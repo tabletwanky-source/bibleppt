@@ -47,6 +47,7 @@ import BibleSearch from './components/BibleSearch';
 import LivePresentation from './components/LivePresentation';
 import RemoteControl from './components/RemoteController';
 import RemoteViewer from './components/RemoteViewer';
+import { RemoteControlPage } from './components/RemoteControlPage';
 import bibleFallback from './bible_fallback.json';
 import { useLanguage } from './i18n/LanguageContext';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
@@ -915,7 +916,7 @@ export default function App() {
   };
 
   if (view === 'remote') {
-    return <RemoteControl />;
+    return <RemoteControlPage />;
   }
 
   if (view === 'viewer') {
