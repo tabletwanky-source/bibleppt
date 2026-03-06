@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye, Smartphone, QrCode, Lock, Unlock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, X, Clock, Eye, Smartphone, QrCode, Lock, Clock as Unlock } from 'lucide-react';
 import { Slide } from '../services/presentationService';
 import { getTheme } from '../config/themes';
 import { QRCodeSVG } from 'qrcode.react';
