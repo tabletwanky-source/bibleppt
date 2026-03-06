@@ -4,32 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Download, 
-  Settings, 
-  BookOpen, 
-  Layers, 
-  Palette, 
-  ChevronRight, 
-  Loader2,
-  CheckCircle2,
-  AlertCircle,
-  X,
-  Music,
-  Type,
-  ClipboardPaste,
-  ArrowLeft,
-  ArrowRight,
-  Sun,
-  Moon,
-  Sparkles,
-  Image,
-  Layout,
-  Play,
-  Edit3,
-  Check
-} from 'lucide-react';
+import { Search, Download, Settings, BookOpen, Layers, Palette, ChevronRight, Loader as Loader2, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, X, Music, Type, ClipboardPaste, ArrowLeft, ArrowRight, Sun, Moon, Sparkles, Image, LayoutGrid as Layout, Play, CreditCard as Edit3, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import pptxgen from 'pptxgenjs';
 import { jsPDF } from 'jspdf';
