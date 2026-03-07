@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Loader2, Plus, Book, History, AlertCircle } from 'lucide-react';
+import { Search, Loader as Loader2, Plus, Book, History, CircleAlert as AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import bibleFr from '../bible_fr.json';
 import bibleFallback from '../bible_fallback.json';
