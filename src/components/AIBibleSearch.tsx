@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { Search, Sparkles, Loader2, AlertCircle, BookOpen } from 'lucide-react';
+import { Search, Sparkles, Loader as Loader2, CircleAlert as AlertCircle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../i18n/LanguageContext';
 

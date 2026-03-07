@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Plus, FolderOpen, Edit, Trash2, Copy, ArrowLeft } from 'lucide-react';
+import { Plus, FolderOpen, CreditCard as Edit, Trash2, Copy, ArrowLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import CustomSlideEditor from './CustomSlideEditor';
 

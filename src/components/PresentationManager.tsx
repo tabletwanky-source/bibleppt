@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Presentation, presentationService } from '../services/presentationService';
-import { Play, Trash2, Copy, Edit2, Plus, FolderOpen, Edit } from 'lucide-react';
+import { Play, Trash2, Copy, CreditCard as Edit2, Plus, FolderOpen, CreditCard as Edit } from 'lucide-react';
 import { motion } from 'motion/react';
 import SlideEditor from './SlideEditor';
 
