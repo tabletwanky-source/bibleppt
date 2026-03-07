@@ -3,10 +3,11 @@ import en from "./en.json";
 import fr from "./fr.json";
 import es from "./es.json";
 import ht from "./ht.json";
+import pt from "./pt.json";
 
 type Translations = typeof en;
 
-const translations: Record<string, any> = { en, fr, es, ht };
+const translations: Record<string, any> = { en, fr, es, ht, pt };
 
 interface LanguageContextType {
   lang: string;
