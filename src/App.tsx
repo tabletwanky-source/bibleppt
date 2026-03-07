@@ -19,12 +19,15 @@ import CanvaIntegration from './components/CanvaIntegration';
 import ContactForm from './components/ContactForm';
 import AboutContent from './components/AboutContent';
 import BibleSearch from './components/BibleSearch';
+import AIBibleSearch from './components/AIBibleSearch';
 import LivePresentation from './components/LivePresentation';
 import RemoteControl from './components/RemoteController';
 import RemoteViewer from './components/RemoteViewer';
 import { RemoteControlPage } from './components/RemoteControlPage';
 import PresentationController from './components/PresentationController';
 import ViewerMode from './components/ViewerMode';
+import CustomSlideEditor from './components/CustomSlideEditor';
+import CustomPresentationBuilder from './components/CustomPresentationBuilder';
 import bibleFallback from './bible_fallback.json';
 import { useLanguage } from './i18n/LanguageContext';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
@@ -82,7 +85,7 @@ import { logUserActivity } from "./services/activityService";
 
 export default function App() {
   const { lang, t } = useLanguage();
-  const [view, setView] = useState<'landing' | 'generator' | 'auth' | 'dashboard' | 'live-presentation' | 'remote' | 'viewer' | 'presentations'>('landing');
+  const [view, setView] = useState<'landing' | 'generator' | 'auth' | 'dashboard' | 'live-presentation' | 'remote' | 'viewer' | 'presentations' | 'custom-builder'>('landing');
   const [user, setUser] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -907,6 +910,10 @@ export default function App() {
     return <PresentationController />;
   }
 
+  if (view === 'custom-builder' && user) {
+    return <CustomPresentationBuilder user={user} darkMode={darkMode} onBack={() => setView('dashboard')} />;
+  }
+
   if (view === 'live-presentation') {
     return (
       <LivePresentation
@@ -994,6 +1001,12 @@ export default function App() {
               {user && (
                 <>
                   <button
+                    onClick={() => setView('custom-builder')}
+                    className="hidden sm:flex items-center gap-2 text-sm font-bold text-purple-600 hover:underline"
+                  >
+                    <Sparkles className="w-4 h-4" /> Custom Slides
+                  </button>
+                  <button
                     onClick={() => setView('presentations')}
                     className="hidden sm:flex items-center gap-2 text-sm font-bold text-emerald-600 hover:underline"
                   >
@@ -1019,16 +1032,43 @@ export default function App() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
+        {/* AI-Powered Bible Search */}
+        <div className="mb-8">
+          <AIBibleSearch
+            darkMode={darkMode}
+            onGenerateSlides={(verses) => {
+              const versesText = verses.map(v => `${v.verse}. ${v.text}`).join('\n\n');
+              setMode('paste');
+              setPasteType('bible');
+              setPastedText(versesText);
+              setBibleData({
+                book: verses[0]?.book || 'Bible',
+                chapter: verses[0]?.chapter || 1,
+                verses: verses.map(v => ({ number: v.verse, text: v.text })),
+                language: language,
+                source: 'AI Search'
+              });
+              window.scrollTo({ top: 600, behavior: 'smooth' });
+            }}
+            onAddVerses={(verses) => {
+              const versesText = verses.map(v => `${v.verse}. ${v.text}`).join('\n\n');
+              setMode('paste');
+              setPasteType('bible');
+              setPastedText(versesText);
+            }}
+          />
+        </div>
+
         {/* Bible Search API Integration */}
-        <BibleSearch 
-          darkMode={darkMode} 
+        <BibleSearch
+          darkMode={darkMode}
           onAddVerse={(text) => {
             setMode('paste');
             setPasteType('bible');
             setPastedText(text);
             // Scroll to editor
             window.scrollTo({ top: 400, behavior: 'smooth' });
-          }} 
+          }}
         />
 
         {/* Mode Switcher */}

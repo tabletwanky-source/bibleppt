@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Presentation, presentationService } from '../services/presentationService';
-import { Play, Trash2, Copy, Edit2, Plus, FolderOpen } from 'lucide-react';
+import { Play, Trash2, Copy, Edit2, Plus, FolderOpen, Edit } from 'lucide-react';
+import { motion } from 'motion/react';
+import SlideEditor from './SlideEditor';
 
 interface PresentationManagerProps {
   onOpenPresentation: (presentation: Presentation) => void;
   onNewPresentation: () => void;
+  user?: any;
+  darkMode?: boolean;
 }
 
 export default function PresentationManager({ onOpenPresentation, onNewPresentation }: PresentationManagerProps) {
