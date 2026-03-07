@@ -126,6 +126,24 @@ GET /api/bible/Matthew/5:1-10
 
 ---
 
+## Bible Version
+
+### O Livro (OL)
+
+When Portuguese is selected, BibleSlide uses **O Livro (OL)** as the Bible version:
+
+**About O Livro:**
+- Contemporary Portuguese translation
+- Full name: "O Livro - A Bíblia para Todos"
+- Easy to read and understand
+- Widely used in Brazil and Portugal
+
+**API Code:** `OL`
+
+Users automatically get verses from O Livro when searching in Portuguese.
+
+---
+
 ## Search Examples
 
 ### Example 1: Gospel Passage

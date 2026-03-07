@@ -28,13 +28,14 @@ export default function BibleSearch({ darkMode, onAddVerse }: BibleSearchProps) 
   const [recentSearches, setRecentSearches] = useState<VerseData[]>([]);
 
   const API_KEY = import.meta.env.VITE_BIBLIA_API_KEY || 'a885981dd77323d92bb9190a36c6ea24';
-  const bibliaTranslation = lang === 'es' ? 'RVR60' : lang === 'en' ? 'KJV' : 'LSG';
+  const bibliaTranslation = lang === 'pt' ? 'OL' : lang === 'es' ? 'RVR60' : lang === 'en' ? 'KJV' : 'LSG';
   const BASE_URL = `https://api.biblia.com/v1/bible/content/${bibliaTranslation}.txt.json`;
 
   const languages = [
     { code: "en", label: "English" },
     { code: "fr", label: "Français" },
     { code: "es", label: "Español" },
+    { code: "pt", label: "Português" },
   ];
 
   useEffect(() => {
@@ -72,7 +73,12 @@ export default function BibleSearch({ darkMode, onAddVerse }: BibleSearchProps) 
   };
 
   const highlightKeywords = (text: string) => {
-    const keywords = ['Dieu', 'Jésus', 'Seigneur', 'Christ', 'Eternel', 'Bondye', 'Seyè', 'God', 'Jesus', 'Lord', 'Dios', 'Jesús', 'Señor'];
+    const keywords = [
+      'Dieu', 'Jésus', 'Seigneur', 'Christ', 'Eternel', 'Bondye', 'Seyè',
+      'God', 'Jesus', 'Lord', 'Christ',
+      'Dios', 'Jesús', 'Señor', 'Cristo',
+      'Deus', 'Jesus', 'Senhor', 'Cristo'
+    ];
     let highlighted = text;
     keywords.forEach(word => {
       const regex = new RegExp(`\\b(${word})\\b`, 'gi');
@@ -115,8 +121,8 @@ export default function BibleSearch({ darkMode, onAddVerse }: BibleSearchProps) 
       }
 
       if (navigator.onLine) {
-        const translation = lang === 'en' ? 'kjv' : lang === 'es' ? 'rvr60' : 'lsg';
-        
+        const translation = lang === 'pt' ? 'ol' : lang === 'en' ? 'kjv' : lang === 'es' ? 'rvr60' : 'lsg';
+
         // Biblia API
         const bibliaTranslation = translation.toUpperCase();
         const fetchResponse = await fetch(`https://api.biblia.com/v1/bible/content/${bibliaTranslation}.txt.json?passage=${encodeURIComponent(searchQuery)}&key=${API_KEY}`);
